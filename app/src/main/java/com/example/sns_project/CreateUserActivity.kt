@@ -24,6 +24,7 @@ class CreateUserActivity : AppCompatActivity() {
     var passwordRegError : String = "비밀번호는 10-15자 영문(대/소문자) 숫자를 사용해야합니다."
     val nicknameReg = Regex("^[a-zA-Z0-9]{0,10}$")
     val passwordReg = Regex("^[a-zA-Z0-9]{10,15}$")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
