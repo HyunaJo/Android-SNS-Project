@@ -100,8 +100,8 @@ class CreateUserActivity : AppCompatActivity() {
                     .addOnFailureListener { e ->
                         Log.w(TAG, "Error adding document", e)
                     }
-                //val intent = Intent(this, LoginActivity::class.java)
-                //startActivity(intent)
+                val intent = Intent(this, LoginActivity::class.java)
+                startActivity(intent)
             }
         }
     }
