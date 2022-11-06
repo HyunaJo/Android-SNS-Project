@@ -40,7 +40,7 @@ class LoginActivity : AppCompatActivity() {
         //회원가입 클릭
         binding.signup.setOnClickListener {
             startActivity(
-                Intent(this, MainActivity::class.java) //회원가입 화면으로 이동
+                Intent(this, CreateUserActivity::class.java) //회원가입 화면으로 이동
             )
         }
     }
