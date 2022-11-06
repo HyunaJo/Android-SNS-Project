@@ -1,5 +1,6 @@
 package com.example.sns_project
 
+import android.app.PendingIntent
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -22,10 +23,15 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        //로그아웃 버튼 클릭
-        binding.logoutButton.setOnClickListener {
-            Firebase.auth.signOut()
-            finish()
-        }
+//        //로그아웃 버튼 클릭
+//        binding.logoutButton.setOnClickListener {
+//            Firebase.auth.signOut()
+//            finish()
+//        }
+
+        val intent = Intent(this, SnsActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+        pendingIntent.send()
     }
 }
