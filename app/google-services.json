@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "653670160845",
+    "project_id": "sns-project-dc395",
+    "storage_bucket": "sns-project-dc395.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653670160845:android:8ea06899b00fe4d6a3cc84",
+        "android_client_info": {
+          "package_name": "com.example.sns_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653670160845-b58ajbu8ebb7vgik011k7dtj37d72k64.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCzmNCSRtvOZ5i-ksOwhey3mS8fJ5ykac"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653670160845-b58ajbu8ebb7vgik011k7dtj37d72k64.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
