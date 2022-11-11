@@ -7,7 +7,7 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:653670160845:android:8ea06899b00fe4d6a3cc84",
+        "mobilesdk_app_id": "1:653670160845:android:e7c7524769e24b26a3cc84",
         "android_client_info": {
           "package_name": "com.example.sns_project"
         }

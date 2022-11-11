@@ -15,13 +15,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        System.out.println("Firebase.auth.currentUser ${Firebase.auth.currentUser}")
+        val intent = Intent(this, SnsActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
+
         //로그인하지 않은 경우
         if (Firebase.auth.currentUser == null) {
+            System.out.println("aaaaa")
             startActivity(
                 Intent(this, LoginActivity::class.java)) //로그인 화면으로 이동
             finish()
         }
-
+        else{
+            pendingIntent.send()
+        }
 
 //        //로그아웃 버튼 클릭
 //        binding.logoutButton.setOnClickListener {
@@ -29,9 +37,6 @@ class MainActivity : AppCompatActivity() {
 //            finish()
 //        }
 
-        val intent = Intent(this, SnsActivity::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-        pendingIntent.send()
+
     }
 }
