@@ -10,6 +10,7 @@ import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.util.*
@@ -101,6 +102,10 @@ class CreateUserActivity : AppCompatActivity() {
                     .addOnFailureListener { e ->
                         Log.w(TAG, "Error adding document", e)
                     }
+
+                // Authentication 회원가입
+                Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
+
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
