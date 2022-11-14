@@ -54,7 +54,8 @@ class LoginActivity : AppCompatActivity() {
                         Intent(this, MainActivity::class.java) //메인 화면으로 이동
                     )
                     finish()
-                } else { //로그인 실패한 경우
+                }
+                else { //로그인 실패한 경우
                     binding.loginExceptionText.text = "아이디 또는 비밀번호를 다시 확인하세요."
                     Log.w("LoginActivity", "signInWithEmail", it.exception)
                 }
