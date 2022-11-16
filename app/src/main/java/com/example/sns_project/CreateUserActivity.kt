@@ -5,26 +5,44 @@ import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.*
 import java.util.*
+import java.util.regex.Pattern
 
+
+data class userInfo(val userEmail : String, val password : String, val nickname : String, val birthday : String)
 
 class CreateUserActivity : AppCompatActivity() {
     lateinit var auth : FirebaseAuth
+    var userInfoList = arrayListOf<userInfo>()
     var passwordError : String = "비밀번호가 잘못 입력되었습니다."
-    var emailError : String = "중복된 아이디입니다."
-    var nicknameError : String = "중복된 닉네임입니다."
-    var nicknameRegError : String = "닉네임은 10자 이내의 영문(대/소문자), 숫자를 사용해야합니다."
     var passwordRegError : String = "비밀번호는 10-15자 영문(대/소문자) 숫자를 사용해야합니다."
-    val nicknameReg = Regex("^[a-zA-Z0-9]{0,10}$")
     val passwordReg = Regex("^[a-zA-Z0-9]{10,15}$")
+
+    var nicknameDuplicatedError : String = "중복된 닉네임입니다."
+    var nicknameRegError : String = "닉네임은 10자 이내의 영문(대/소문자), 숫자를 사용해야합니다."
+    val nicknameReg = Regex("^[a-zA-Z0-9]{0,10}$")
+
+    var emailDuplicatedError : String = "중복된 아이디입니다."
+    var emailRegexError : String = "잘못된 아이디 형식입니다. 이메일 형식으로 입력해주세요."
+
+    var birthNumberRegexError : String = "생년월일을 주민번호 앞자리형식으로 입력해주세요."
+    val birthNumberReg = Regex("^[0-9]{6}$")        //주민번호 앞자리 정규 표현식
+
+    val defaultImageStoragePath : String = "gs://sns-project-dc395.appspot.com/images/default.png"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,7 +72,6 @@ class CreateUserActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            //아이디, 닉네임 중복
             if (!password.equals(passwordCheck)) {            //비밀번호가 다를 경우
                 findViewById<TextView>(R.id.passwordfaultText).text = passwordError
                 return@setOnClickListener
@@ -67,45 +84,36 @@ class CreateUserActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.passwordfaultText).text = passwordRegError
                 return@setOnClickListener
             }
+
+            val pattern: Pattern = Patterns.EMAIL_ADDRESS
+            if(!pattern.matcher(userEmail).matches()) {
+                findViewById<TextView>(R.id.EmailErrorText).text = emailRegexError
+            }
+
+            if (!birthNumberReg.containsMatchIn(birthday)) {            //생년월일입력이 잘못되었을때,
+                findViewById<TextView>(R.id.BirthNumberErrorText).text = birthNumberRegexError
+                return@setOnClickListener
+            }
+
             else {
-                val db = Firebase.firestore
-                /*
-                //데이터 읽기(콘솔 로그에 찍은 값)
-                db.collection("users")
-                    .get()
-                    .addOnSuccessListener { documents ->            //성공했을경우,
-                        for(document in documents) {
-                            System.out.println(document.data["email"])
-                            System.out.println(document.data["nickname"])
-                            if(document.data["email"]?.equals(userEmail) == true) {
-                                findViewById<TextView>(R.id.EmailErrorText).text = emailError
-                            }
-                            if(document.data["nickname"]?.equals(nickname) == true) {
-                                findViewById<TextView>(R.id.NicknameErrorText).text = nicknameError
-                            }
-                        }
-                    }
-                 */
+                val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                val itemsRef = database.getReference("users")
+
                 val user = hashMapOf(
                     "email"    to userEmail.lowercase(Locale.getDefault()),
                     "password" to password.lowercase(Locale.getDefault()),
                     "nickname" to nickname.lowercase(Locale.getDefault()),
-                    "birthday" to birthday
+                    "birthday" to birthday,
+                    "profileimage" to defaultImageStoragePath
                 )
 
-                    //데이터 쓰기
-                db.collection("users")
-                    .add(user)
-                    .addOnSuccessListener { documentReference ->
-                        Log.d(TAG, "DocumentSnapshot added with ID: ${documentReference.id}")
-                    }
-                    .addOnFailureListener { e ->
-                        Log.w(TAG, "Error adding document", e)
-                    }
-
-                // Authentication 회원가입
+                val EmailID = userEmail.split("@")
+                //userEmail을 키값으로 가지는 사용자
+                val itr = itemsRef.child(EmailID[0])
+                itr.setValue(user)
+                // Authentication 회원가입(인증에 대한 코드)
+                // Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
                 Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
-
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
