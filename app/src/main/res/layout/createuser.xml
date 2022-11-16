@@ -135,6 +135,7 @@
                 android:textColor="@color/OriginRed"
                 android:textSize="10sp" />
 
+
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
@@ -155,6 +156,15 @@
                 android:textColor="@color/black"
                 android:textCursorDrawable="@color/OriginBlue"
                 android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/BirthNumberErrorText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/OriginRed"
+                android:textSize="10sp" />
+
+
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
