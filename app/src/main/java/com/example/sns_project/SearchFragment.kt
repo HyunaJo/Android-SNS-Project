@@ -13,6 +13,7 @@ import androidx.appcompat.widget.SearchView.SearchAutoComplete
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.navigation.fragment.findNavController
 import com.example.sns_project.databinding.SearchfragmentLayoutBinding
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,10 +22,8 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class SearchFragment: Fragment(R.layout.searchfragment_layout){
-    var names = arrayOf("aaaa","bbbb","asb","bet","hbvvwr","hhh","ggwfvb","htvrf")
     lateinit var arrayAdapter:ArrayAdapter<String>
     lateinit var listView:ListView
-//    lateinit var listView:RecyclerView
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     val usersRef = database.getReference("users")
     var users = ArrayList<String>()
@@ -44,23 +43,29 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
             }
 
             override fun onDataChange(snapshot: DataSnapshot) {
-
+                users.clear()
                 for (userSnapShot in snapshot.children) {
                     System.out.println(userSnapShot)
                     val user = userSnapShot.getValue(User::class.java)
                     System.out.println(user)
                     users.add(user!!.nickname)
-//                    if (user != null) {
-//                        users.add(user)
-//
-//                    }
                 }
-
             }
         })
 
         arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,users)
         listView.adapter = arrayAdapter
+        listView.setOnItemClickListener{ parent, view, position, id ->
+            val name = users.get(position)
+            System.out.println("#################${name} 클릭함####################")
+            val navAction = SearchFragmentDirections.actionSearchFragmentToUserFeedFragment(name)
+            findNavController().navigate(navAction)
+//            findNavController().navigate(R.id.action_searchFragment_to_userFeedFragment)
+
+//            snsActivity.changeFragment(1)
+//            (activity as SnsActivity).supportFragmentManager.beginTransaction().replace(R.id.userFeedFragment, UserFeedFragment()).commit()
+
+        }
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.search_menu, menu)
@@ -92,8 +97,7 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                     }
                     else -> false
                 }
-        }
+            }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
-
     }
 }

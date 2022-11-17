@@ -19,5 +19,19 @@
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.sns_project.SearchFragment"
-        android:label="SearchFragment" />
+        android:label="SearchFragment" >
+        <action
+            android:id="@+id/action_searchFragment_to_userFeedFragment"
+            app:destination="@id/userFeedFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/userFeedFragment"
+        android:name="com.example.sns_project.UserFeedFragment"
+        android:label="UserFeedFragment" >
+        <argument
+            android:name="selectUserName"
+            app:argType="string" />
+
+    </fragment>
 </navigation>
