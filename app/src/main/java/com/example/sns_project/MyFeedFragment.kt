@@ -5,16 +5,16 @@ import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
-import com.example.sns_project.databinding.MyFeedBinding
+import com.example.sns_project.databinding.MyfeedfragmentLayoutBinding
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 
-class MyFeedFragment : Fragment(R.layout.my_feed) {
+class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val snsActivity = activity as SnsActivity
-        snsActivity.hideUpButton()
-        val binding = MyFeedBinding.bind(view)      //binding 따기,
+//        snsActivity.hideUpButton()
+        val binding = MyfeedfragmentLayoutBinding.bind(view)      //binding 따기,
         val rootRef = Firebase.storage.reference
         val ref = rootRef.child("images/default.jpg")
         ref.getBytes(Long.MAX_VALUE).addOnCompleteListener {

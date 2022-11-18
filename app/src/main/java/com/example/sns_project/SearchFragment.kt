@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.ListView
+import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.SearchAutoComplete
 import androidx.core.view.MenuProvider
@@ -31,7 +32,7 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val snsActivity = activity as SnsActivity
-
+        snsActivity.findViewById<TextView>(R.id.toolbarTextView).text=""
         System.out.println(usersRef)
 
         val binding = SearchfragmentLayoutBinding.bind(view)

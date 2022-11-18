@@ -11,13 +11,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/OriginBlue"
+        android:foregroundTint="@color/white"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:theme="@style/ToolbarTheme"
-        android:foregroundTint="@color/white"/>
+        app:theme="@style/ToolbarTheme" />
+
+    <TextView
+        android:id="@+id/toolbarTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:fontFamily="@font/handlee"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="@+id/guideline20"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragment"
@@ -45,5 +60,12 @@
         app:itemIconTint="@color/white"
         app:labelVisibilityMode="unlabeled"
         app:menu="@menu/bottom_menu"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.05" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
