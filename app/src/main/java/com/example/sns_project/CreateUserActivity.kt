@@ -23,11 +23,16 @@ import java.util.*
 import java.util.regex.Pattern
 
 
-data class userInfo(val userEmail : String, val password : String, val nickname : String, val birthday : String)
+
 
 class CreateUserActivity : AppCompatActivity() {
     lateinit var auth : FirebaseAuth
-    var userInfoList = arrayListOf<userInfo>()
+    val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    val usersRef = database.reference.child("users")
+
+    var userEmailList = arrayListOf<String>()
+    var userNicknameList = arrayListOf<String>()
+
     var passwordError : String = "비밀번호가 잘못 입력되었습니다."
     var passwordRegError : String = "비밀번호는 10-15자 영문(대/소문자) 숫자를 사용해야합니다."
     val passwordReg = Regex("^[a-zA-Z0-9]{10,15}$")
@@ -48,6 +53,21 @@ class CreateUserActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
         setContentView(R.layout.createuser)
+
+        usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+            }
+
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userSnapShot in snapshot.children) {
+                    System.out.println(userSnapShot)
+//                    val user = System.out.println(user)
+                    userEmailList.add(userSnapShot!!.child("email").getValue(String::class.java)!!)
+                    userNicknameList.add(userSnapShot!!.child("nickname").getValue(String::class.java)!!)
+                }
+            }
+        })
+
         val createUserButton = findViewById<Button>(R.id.createUserButton)
         createUserButton.setOnClickListener {
             //사용자가 입력한 정보를 가져옴
@@ -76,6 +96,17 @@ class CreateUserActivity : AppCompatActivity() {
                 findViewById<TextView>(R.id.passwordfaultText).text = passwordError
                 return@setOnClickListener
             }
+
+            if(checkIsDuplicatedEmail(userEmail)){
+                findViewById<TextView>(R.id.EmailErrorText).text = emailDuplicatedError
+                return@setOnClickListener
+            }
+
+            if(checkIsDuplicatedNickname(nickname)){
+                findViewById<TextView>(R.id.NicknameErrorText).text = nicknameDuplicatedError
+                return@setOnClickListener
+            }
+
             if (!nicknameReg.containsMatchIn(nickname)) {                //닉네임은 10자 이내의 영문(대/소문자), 숫자 제한
                 findViewById<TextView>(R.id.NicknameErrorText).text = nicknameRegError
                 return@setOnClickListener
@@ -96,9 +127,6 @@ class CreateUserActivity : AppCompatActivity() {
             }
 
             else {
-                val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
-                val itemsRef = database.getReference("users")
-
                 val user = hashMapOf(
                     "email"    to userEmail.lowercase(Locale.getDefault()),
                     "password" to password.lowercase(Locale.getDefault()),
@@ -109,14 +137,39 @@ class CreateUserActivity : AppCompatActivity() {
 
                 val EmailID = userEmail.split("@")
                 //userEmail을 키값으로 가지는 사용자
-                val itr = itemsRef.child(EmailID[0])
-                itr.setValue(user)
+                val userNode = usersRef.child(EmailID[0])
+                userNode.setValue(user)
+
                 // Authentication 회원가입(인증에 대한 코드)
                 // Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
                 Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
+
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
             }
         }
+
+    }
+
+    private fun checkIsDuplicatedEmail(newEmail:String):Boolean{
+        var isDuplicated = false
+        for(existEmail in userEmailList){
+            System.out.println("existEmail = ${existEmail} / newEmail = ${newEmail}")
+            if(existEmail.equals(newEmail)){
+                isDuplicated = true
+            }
+        }
+        return isDuplicated
+    }
+
+    private fun checkIsDuplicatedNickname(newNickname:String):Boolean{
+        var isDuplicated = false
+        for(existNickname in userNicknameList){
+            System.out.println("existNickname = ${existNickname} / newNickname = ${newNickname}")
+            if(existNickname.equals(newNickname)){
+                isDuplicated = true
+            }
+        }
+        return isDuplicated
     }
 }
