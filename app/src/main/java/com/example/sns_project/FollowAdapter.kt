@@ -35,7 +35,7 @@ class FollowAdapter(val context : Context, private val FollowDataList : MutableL
         }
         val follow = FollowDataList[p0]
         followListEmailTextView.text = follow.id
-        followListNameTextView.text = follow.username;
+//        followListNameTextView.text = follow.username;
         return binding.root
     }
 }
