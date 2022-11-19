@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav.xml"
     app:startDestination="@id/homeFragment">
 
@@ -15,11 +16,16 @@
     <fragment
         android:id="@+id/myFeedFragment"
         android:name="com.example.sns_project.MyFeedFragment"
-        android:label="MyFeedFragment" />
+        android:label="MyFeedFragment" >
+        <action
+            android:id="@+id/action_myFeedFragment_to_followListFragment"
+            app:destination="@id/followListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.sns_project.SearchFragment"
         android:label="SearchFragment" >
+
         <action
             android:id="@+id/action_searchFragment_to_userFeedFragment"
             app:destination="@id/userFeedFragment" />
@@ -32,6 +38,21 @@
         <argument
             android:name="selectUserName"
             app:argType="string" />
+    <action
+        android:id="@+id/action_userFeedFragment_to_followListFragment"
+        app:destination="@id/followListFragment" />
 
+    </fragment>
+    <fragment
+        android:id="@+id/followListFragment"
+        android:name="com.example.sns_project.FollowListFragment"
+        android:label="FollowListFragment">
+<!--        <argument-->
+<!--            android:name=""-->
+<!--            app:argType="Integer" />-->
+        <argument
+            android:name="tabIdx"
+            app:argType="integer"
+            android:defaultValue="0" />
     </fragment>
 </navigation>
