@@ -32,6 +32,7 @@ class CreateUserActivity : AppCompatActivity() {
 
     var userEmailList = arrayListOf<String>()
     var userNicknameList = arrayListOf<String>()
+    var userList = ArrayList<User>()
 
     var passwordError : String = "비밀번호가 잘못 입력되었습니다."
     var passwordRegError : String = "비밀번호는 10-15자 영문(대/소문자) 숫자를 사용해야합니다."
@@ -60,10 +61,12 @@ class CreateUserActivity : AppCompatActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (userSnapShot in snapshot.children) {
-                    System.out.println(userSnapShot)
-//                    val user = System.out.println(user)
-                    userEmailList.add(userSnapShot!!.child("email").getValue(String::class.java)!!)
-                    userNicknameList.add(userSnapShot!!.child("nickname").getValue(String::class.java)!!)
+//                    System.out.println(userSnapShot)
+                    val user = userSnapShot.getValue(User::class.java)
+                    userList.add(user!!)
+                    System.out.println(user)
+//                    userEmailList.add(userSnapShot!!.child("email").getValue(String::class.java)!!)
+//                    userNicknameList.add(userSnapShot!!.child("nickname").getValue(String::class.java)!!)
                 }
             }
         })
@@ -153,9 +156,9 @@ class CreateUserActivity : AppCompatActivity() {
 
     private fun checkIsDuplicatedEmail(newEmail:String):Boolean{
         var isDuplicated = false
-        for(existEmail in userEmailList){
-            System.out.println("existEmail = ${existEmail} / newEmail = ${newEmail}")
-            if(existEmail.equals(newEmail)){
+        for(user in userList){
+            System.out.println("existEmail = ${user.email} / newEmail = ${newEmail}")
+            if(user.email.equals(newEmail)){
                 isDuplicated = true
             }
         }
@@ -164,9 +167,9 @@ class CreateUserActivity : AppCompatActivity() {
 
     private fun checkIsDuplicatedNickname(newNickname:String):Boolean{
         var isDuplicated = false
-        for(existNickname in userNicknameList){
-            System.out.println("existNickname = ${existNickname} / newNickname = ${newNickname}")
-            if(existNickname.equals(newNickname)){
+        for(user in userList){
+            System.out.println("existNickname = ${user.nickname} / newNickname = ${newNickname}")
+            if(user.nickname.equals(newNickname)){
                 isDuplicated = true
             }
         }
