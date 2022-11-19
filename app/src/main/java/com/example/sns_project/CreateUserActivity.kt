@@ -29,9 +29,6 @@ class CreateUserActivity : AppCompatActivity() {
     lateinit var auth : FirebaseAuth
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     val usersRef = database.reference.child("users")
-
-    var userEmailList = arrayListOf<String>()
-    var userNicknameList = arrayListOf<String>()
     var userList = ArrayList<User>()
 
     var passwordError : String = "비밀번호가 잘못 입력되었습니다."
