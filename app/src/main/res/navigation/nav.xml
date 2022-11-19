@@ -12,7 +12,11 @@
     <fragment
         android:id="@+id/addPostFragment"
         android:name="com.example.sns_project.AddPostFragment"
-        android:label="AddPostFragment" />
+        android:label="AddPostFragment" >
+        <action
+            android:id="@+id/action_addPostFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myFeedFragment"
         android:name="com.example.sns_project.MyFeedFragment"
