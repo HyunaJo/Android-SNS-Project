@@ -5,7 +5,7 @@ data class User (
     val email: String = "",
     val nickname: String = "",
     val password: String = "",
-    val profileimage: String = "",
+    val profileimage: String = "gs://sns-project-dc395.appspot.com/images/default.png",
     val boardList: ArrayList<String>? = ArrayList(),
     val following: ArrayList<String>? = ArrayList(),
     val follower: ArrayList<String>? = ArrayList(),

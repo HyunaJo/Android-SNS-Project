@@ -40,7 +40,7 @@
                 android:backgroundTint="@color/OriginGrey"
                 android:ems="10"
                 android:hint="이메일 주소"
-                android:inputType="text"
+                android:inputType="textEmailAddress"
                 android:textColor="@color/black"
                 android:textCursorDrawable="@color/OriginBlue"
                 android:textSize="15sp" />
@@ -151,7 +151,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/OriginGrey"
                 android:ems="10"
-                android:hint="8자리 입력"
+                android:hint="6자리 입력"
                 android:inputType="date|datetime"
                 android:textColor="@color/black"
                 android:textCursorDrawable="@color/OriginBlue"

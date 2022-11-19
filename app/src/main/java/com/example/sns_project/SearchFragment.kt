@@ -46,9 +46,7 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
             override fun onDataChange(snapshot: DataSnapshot) {
                 users.clear()
                 for (userSnapShot in snapshot.children) {
-                    System.out.println(userSnapShot)
                     val user = userSnapShot.getValue(User::class.java)
-                    System.out.println(user)
                     users.add(user!!.nickname)
                 }
             }
