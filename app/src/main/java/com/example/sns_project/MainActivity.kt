@@ -20,9 +20,9 @@ class MainActivity : AppCompatActivity() {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         val pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE)
 
+        System.out.println("******************* ${Firebase.auth.currentUser?.email} ***********************")
         //로그인하지 않은 경우
         if (Firebase.auth.currentUser == null) {
-            System.out.println("aaaaa")
             startActivity(
                 Intent(this, LoginActivity::class.java)) //로그인 화면으로 이동
             finish()

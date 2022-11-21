@@ -39,9 +39,9 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
         viewModel = snsActivity.viewModel
         viewModel.myData.observe(viewLifecycleOwner, Observer {
             userNameText.text = it.nickname // 사용자 닉네임
-            postNumberText.text = it.boardList!!.size.toString()
-            followingNumberText.text = it.following!!.size.toString() // 팔로잉 수
-            followerNumberText.text = it.follower!!.size.toString() // 팔로워 수
+            postNumberText.text = it.boardList!!.filterNot{ it == null }.size.toString()
+            followingNumberText.text = it.following!!.filterNot{ it == null }.size.toString() // 팔로잉 수
+            followerNumberText.text = it.follower!!.filterNot{ it == null }.size.toString() // 팔로워 수
         })
 
         binding.profileImg.setOnClickListener {}    //프로필 이미지를 변경해야할 경우,

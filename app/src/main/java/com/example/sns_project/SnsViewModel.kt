@@ -14,27 +14,17 @@ import kotlinx.coroutines.launch
 class SnsViewModel(email:String):ViewModel() {
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     val usersRef = database.reference.child("users")
-    var userEmail = ""
+    var userEmail = "" // 현재 로그인한 사용자 이메일
+    var userKey = "" // 현재 로그인한 사용자의 firebase 내 키값
 
     var myData : MutableLiveData<User> = MutableLiveData<User>() // 내 정보
     var searchUserData :  MutableLiveData<User> = MutableLiveData<User>() // 검색해서 선택한 사용자 정보
-    var allUserNicknameData : MutableLiveData<ArrayList<String>> = MutableLiveData<ArrayList<String>>() // 모든 사용자 닉네임
-    var allUserNicknames: ArrayList<String> = ArrayList()
-
     var searchUserEmail = ""
-
-//    fun add(item: String) {
-//        items.add(item)
-//        liveItems.value = items
-//    }
-//
-//    fun remove(item: String) {
-//        items.remove(item)
-//        liveItems.value = items
-//    }
+    var searchUserKey = ""
 
     init{
         userEmail = email
+        userKey = getKey(userEmail)
         getMyInfo()
     }
 
@@ -42,6 +32,7 @@ class SnsViewModel(email:String):ViewModel() {
         viewModelScope.launch {
             usersRef.orderByChild("email").equalTo(userEmail).addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    System.out.println(snapshot.value)
                     val user = snapshot.getValue(User::class.java)
                     myData.value = user!!
                     System.out.println(myData.value!!)
@@ -73,14 +64,17 @@ class SnsViewModel(email:String):ViewModel() {
         viewModelScope.launch {
             usersRef.orderByChild("nickname").equalTo(searchUserNickname).addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    System.out.println("################ onChildAdded ######################")
                     val user = snapshot.getValue(User::class.java)
                     searchUserData.value = user!!
                     searchUserEmail = searchUserData.value!!.email
+                    searchUserKey = getKey(searchUserEmail)
                     System.out.println(searchUserData.value!!)
 
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                    System.out.println("################ onChildChanged ######################")
                     val user = snapshot.getValue(User::class.java)
                     searchUserData.value = user!!
                     searchUserEmail = searchUserData.value!!.email
@@ -115,35 +109,27 @@ class SnsViewModel(email:String):ViewModel() {
         }
     }
 
-    fun getAllUserNickname(){
+    fun followUser(){
         viewModelScope.launch {
-            usersRef.addChildEventListener(object : ChildEventListener {
-                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    val nickname = snapshot.child("nickname").getValue(String::class.java)
-                    if(nickname != myData.value!!.nickname){
-                        allUserNicknames.add(nickname!!)
-                    }
-                    allUserNicknameData.value = allUserNicknames
-                }
-
-                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                    val user = snapshot.getValue(User::class.java)
-                    searchUserData.value = user!!
-                    System.out.println(searchUserData.value!!)
-                }
-
-                override fun onChildRemoved(snapshot: DataSnapshot) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
-                    TODO("Not yet implemented")
-                }
-
-                override fun onCancelled(error: DatabaseError) {
-                    TODO("Not yet implemented")
-                }
-            })
+            // 상대방 follower에 사용자 key 저장
+            usersRef.child(searchUserKey).child("follower").child((searchUserData.value!!.follower!!.size).toString()).setValue(userKey)
+            // 사용자 following에 상대방 key 저장
+            usersRef.child(userKey).child("following").child((myData.value!!.following!!.size).toString()).setValue(searchUserKey)
         }
     }
+
+    fun unfollowUser(){
+        val removeFollowerKey = searchUserData.value!!.follower!!.indexOf(userKey)
+        val removeFollowingKey = myData.value!!.following!!.indexOf(searchUserKey)
+
+        // 상대방 follower에 사용자 key 삭제
+        usersRef.child(searchUserKey).child("follower").child(removeFollowerKey.toString()).removeValue()
+        // 사용자 following에서 상대방 key 삭제
+        usersRef.child(userKey).child("following").child(removeFollowingKey.toString()).removeValue()
+    }
+
+    fun getKey(email:String):String{
+        return email.split('@')[0]
+    }
+
 }

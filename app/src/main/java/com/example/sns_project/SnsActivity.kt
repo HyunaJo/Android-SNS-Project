@@ -50,7 +50,7 @@ class SnsActivity : AppCompatActivity() {
                 controller, destination,arguments->
             run {
                 when (destination.label) {
-                    "HomeFragment" -> {
+                    "HomeFragment","AddPostFragment","MyFeedFragment" -> {
                         binding.toolbarTextView.text = "Gostagram"
                     }
                     else -> {}

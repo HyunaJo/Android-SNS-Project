@@ -14,6 +14,7 @@ import androidx.appcompat.widget.SearchView.SearchAutoComplete
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.sns_project.databinding.SearchfragmentLayoutBinding
 import com.google.firebase.database.DataSnapshot
@@ -28,6 +29,7 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     val usersRef = database.getReference("users")
     var users = ArrayList<String>()
+    lateinit var viewModel:SnsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,8 +39,8 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
 
         val binding = SearchfragmentLayoutBinding.bind(view)
         listView = binding.searchListView
+        viewModel = snsActivity.viewModel
 
-        System.out.println(usersRef)
         usersRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
             }
@@ -47,7 +49,8 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                 users.clear()
                 for (userSnapShot in snapshot.children) {
                     val user = userSnapShot.getValue(User::class.java)
-                    users.add(user!!.nickname)
+                    if(!user!!.nickname.equals(snsActivity.viewModel.myData.value!!.nickname))
+                        users.add(user!!.nickname)
                 }
             }
         })
@@ -56,11 +59,10 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
         listView.adapter = arrayAdapter
         listView.setOnItemClickListener{ parent, view, position, id ->
             val name = users.get(position)
-            System.out.println("#################${name} 클릭함####################")
+            viewModel.getSearchUserInfo(name)
             val navAction = SearchFragmentDirections.actionSearchFragmentToUserFeedFragment(name)
             findNavController().navigate(navAction)
 //            findNavController().navigate(R.id.action_searchFragment_to_userFeedFragment)
-
 //            snsActivity.changeFragment(1)
 //            (activity as SnsActivity).supportFragmentManager.beginTransaction().replace(R.id.userFeedFragment, UserFeedFragment()).commit()
 

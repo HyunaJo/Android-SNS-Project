@@ -32,15 +32,15 @@ class FollowListActivity : AppCompatActivity() {
         println("uid ======================================" + uid)
         myEmail = Firebase.auth.currentUser?.email.toString() //(이메일을 땄어)
 
-        binding.FollowerListTextView.setOnClickListener {
-            val followerAdapter = FollowAdapter(this, followerList)
-            binding.FollowListView.adapter = followerAdapter
-        }
+//        binding.FollowerListTextView.setOnClickListener {
+//            val followerAdapter = FollowAdapter(this, followerList)
+//            binding.FollowListView.adapter = followerAdapter
+//        }
 
-        binding.FollowingListTextView.setOnClickListener {
-            val followingAdapter = FollowAdapter(this, followingList)
-            binding.FollowListView.adapter = followingAdapter
-        }
+//        binding.FollowingListTextView.setOnClickListener {
+//            val followingAdapter = FollowAdapter(this, followingList)
+//            binding.FollowListView.adapter = followingAdapter
+//        }
     }
 
 }
