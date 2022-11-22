@@ -131,8 +131,7 @@ class CreateUserActivity : AppCompatActivity() {
                     "email"    to userEmail.lowercase(Locale.getDefault()),
                     "password" to password.lowercase(Locale.getDefault()),
                     "nickname" to nickname.lowercase(Locale.getDefault()),
-                    "birthday" to birthday,
-                    "profileimage" to defaultImageStoragePath
+                    "birthday" to birthday
                 )
 
                 val EmailID = userEmail.split("@")

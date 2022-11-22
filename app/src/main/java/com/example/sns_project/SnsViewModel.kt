@@ -22,7 +22,10 @@ class SnsViewModel(email:String):ViewModel() {
     var searchUserEmail = ""
     var searchUserKey = ""
 
+    var isFollowingUser : MutableLiveData<Boolean> = MutableLiveData<Boolean>() // 내 정보
+
     init{
+        isFollowingUser.value = false
         userEmail = email
         userKey = getKey(userEmail)
         getMyInfo()
@@ -69,7 +72,8 @@ class SnsViewModel(email:String):ViewModel() {
                     searchUserData.value = user!!
                     searchUserEmail = searchUserData.value!!.email
                     searchUserKey = getKey(searchUserEmail)
-                    System.out.println(searchUserData.value!!)
+                    System.out.println(searchUserData.value)
+                    isFollowingUser.value = myData.value!!.following!!.contains(searchUserKey)
 
                 }
 
@@ -78,6 +82,7 @@ class SnsViewModel(email:String):ViewModel() {
                     val user = snapshot.getValue(User::class.java)
                     searchUserData.value = user!!
                     searchUserEmail = searchUserData.value!!.email
+                    System.out.println(searchUserData.value)
                 }
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
@@ -111,21 +116,43 @@ class SnsViewModel(email:String):ViewModel() {
 
     fun followUser(){
         viewModelScope.launch {
-            // 상대방 follower에 사용자 key 저장
-            usersRef.child(searchUserKey).child("follower").child((searchUserData.value!!.follower!!.size).toString()).setValue(userKey)
-            // 사용자 following에 상대방 key 저장
-            usersRef.child(userKey).child("following").child((myData.value!!.following!!.size).toString()).setValue(searchUserKey)
+            isFollowingUser.value = true
+
+            var addFollowerKey = searchUserData.value!!.follower!!.indexOf("")
+            var addFollowingKey = myData.value!!.following!!.indexOf("")
+
+            if(addFollowerKey >= 0){
+                usersRef.child(searchUserKey).child("follower").child((addFollowerKey).toString()).setValue(userKey)
+            }
+            else{
+                usersRef.child(searchUserKey).child("follower").child((searchUserData.value!!.follower!!.size).toString()).setValue(userKey)
+            }
+
+            if(addFollowingKey >= 0){
+                usersRef.child(userKey).child("following").child((addFollowingKey).toString()).setValue(searchUserKey)
+            }
+            else{
+                usersRef.child(userKey).child("following").child((myData.value!!.following!!.size).toString()).setValue(searchUserKey)
+            }
+//            // 상대방 follower에 사용자 key 저장
+//            usersRef.child(searchUserKey).child("follower").child((searchUserData.value!!.follower!!.size).toString()).setValue(userKey)
+//            // 사용자 following에 상대방 key 저장
+//            usersRef.child(userKey).child("following").child((myData.value!!.following!!.size).toString()).setValue(searchUserKey)
         }
     }
 
     fun unfollowUser(){
+        isFollowingUser.value = false
+
         val removeFollowerKey = searchUserData.value!!.follower!!.indexOf(userKey)
         val removeFollowingKey = myData.value!!.following!!.indexOf(searchUserKey)
 
         // 상대방 follower에 사용자 key 삭제
-        usersRef.child(searchUserKey).child("follower").child(removeFollowerKey.toString()).removeValue()
+//        usersRef.child(searchUserKey).child("follower").child(removeFollowerKey.toString()).removeValue()
+        usersRef.child(searchUserKey).child("follower").child(removeFollowerKey.toString()).setValue("")
         // 사용자 following에서 상대방 key 삭제
-        usersRef.child(userKey).child("following").child(removeFollowingKey.toString()).removeValue()
+//        usersRef.child(userKey).child("following").child(removeFollowingKey.toString()).removeValue()
+        usersRef.child(userKey).child("following").child(removeFollowingKey.toString()).setValue("")
     }
 
     fun getKey(email:String):String{
