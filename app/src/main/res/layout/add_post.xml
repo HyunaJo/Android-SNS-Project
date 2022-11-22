@@ -167,19 +167,10 @@
         android:id="@+id/imageLoadText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
         android:textColor="#D81818"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline33"
-        app:layout_constraintStart_toEndOf="@+id/imageCountText" />
-
-    <TextView
-        android:id="@+id/imageCountText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="0개 선택"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline33"
-        app:layout_constraintStart_toStartOf="@+id/guideline29" />
+        app:layout_constraintStart_toStartOf="@+id/guideline26"
+        app:layout_constraintTop_toTopOf="@+id/guideline27" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
