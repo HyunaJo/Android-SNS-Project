@@ -164,6 +164,15 @@
         app:layout_constraintTop_toTopOf="@+id/guideline27" />
 
     <TextView
+        android:id="@+id/imageSelectText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline33"
+        app:layout_constraintStart_toStartOf="@+id/guideline29" />
+
+    <TextView
         android:id="@+id/imageLoadText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

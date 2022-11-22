@@ -6,7 +6,9 @@ import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -14,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.sns_project.databinding.AddPostBinding
+import com.example.sns_project.databinding.UserfeedfragmentLayoutBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -35,6 +38,19 @@ class AddPostFragment: Fragment(R.layout.add_post){
     }
     val dataFormat = SimpleDateFormat("yy-MM-dd-hh:mm:ss")
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
+    lateinit var viewModel:SnsViewModel
+    var selectedName = ""
+    var OriginBlueColor = 0
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = AddPostBinding.inflate(inflater,container,false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -76,6 +92,10 @@ class AddPostFragment: Fragment(R.layout.add_post){
         result ->
         if(result.resultCode == RESULT_OK) {
             uri = result.data?.data
+            binding.imageSelectText.text = "선택 완료"
+        }
+        else{
+            binding.imageSelectText.text = ""
         }
     }
 
