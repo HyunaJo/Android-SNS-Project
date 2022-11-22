@@ -24,8 +24,6 @@ class SnsActivity : AppCompatActivity() {
         binding.toolbar.setTitleTextColor(Color.WHITE)
 
         viewModel = ViewModelProvider(this, SnsViewModelFactory(Firebase.auth.currentUser?.email.toString())).get(SnsViewModel::class.java)
-//        System.out.println(Firebase.auth.currentUser?.email.toString())
-//        System.out.println(viewModel.userData.value!!.nickname)
 
         supportActionBar!!.setDisplayShowCustomEnabled(true);
         //Toolbar에 표시되는 제목의 표시 유무를 설정. false로 해야 custom한 툴바의 이름이 화면에 보인다.

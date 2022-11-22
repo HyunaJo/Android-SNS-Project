@@ -1,11 +1,13 @@
 package com.example.sns_project
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
@@ -35,7 +37,6 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
         super.onViewCreated(view, savedInstanceState)
         val snsActivity = activity as SnsActivity
         snsActivity.findViewById<TextView>(R.id.toolbarTextView).text=""
-        System.out.println(usersRef)
 
         val binding = SearchfragmentLayoutBinding.bind(view)
         listView = binding.searchListView
@@ -74,7 +75,7 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                 val menuItem = menu.findItem(R.id.searchFragment)
 
                 val searchView = menuItem.actionView as SearchView
-                searchView.queryHint = "Type here to search users"
+                searchView.queryHint = "Type nickname to search"
                 val searchAutoComplete = searchView.findViewById<View>(androidx.appcompat.R.id.search_src_text) as SearchAutoComplete
                 searchAutoComplete.setTextColor(Color.WHITE)
                 searchView.clearFocus()
@@ -100,5 +101,14 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                 }
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
+    }
+
+    private val keyboard: InputMethodManager by lazy {
+        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        keyboard.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0)
     }
 }

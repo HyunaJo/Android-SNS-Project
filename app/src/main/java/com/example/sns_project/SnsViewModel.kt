@@ -134,10 +134,6 @@ class SnsViewModel(email:String):ViewModel() {
             else{
                 usersRef.child(userKey).child("following").child((myData.value!!.following!!.size).toString()).setValue(searchUserKey)
             }
-//            // 상대방 follower에 사용자 key 저장
-//            usersRef.child(searchUserKey).child("follower").child((searchUserData.value!!.follower!!.size).toString()).setValue(userKey)
-//            // 사용자 following에 상대방 key 저장
-//            usersRef.child(userKey).child("following").child((myData.value!!.following!!.size).toString()).setValue(searchUserKey)
         }
     }
 
@@ -148,10 +144,8 @@ class SnsViewModel(email:String):ViewModel() {
         val removeFollowingKey = myData.value!!.following!!.indexOf(searchUserKey)
 
         // 상대방 follower에 사용자 key 삭제
-//        usersRef.child(searchUserKey).child("follower").child(removeFollowerKey.toString()).removeValue()
         usersRef.child(searchUserKey).child("follower").child(removeFollowerKey.toString()).setValue("")
         // 사용자 following에서 상대방 key 삭제
-//        usersRef.child(userKey).child("following").child(removeFollowingKey.toString()).removeValue()
         usersRef.child(userKey).child("following").child(removeFollowingKey.toString()).setValue("")
     }
 
