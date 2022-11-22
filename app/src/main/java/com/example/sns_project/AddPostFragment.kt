@@ -24,6 +24,8 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import java.util.*
+import kotlin.collections.ArrayList
 
 class AddPostFragment: Fragment(R.layout.add_post){
     var uid = Firebase.auth.currentUser?.uid //현재 로그인한 사용자의 uid
@@ -31,11 +33,7 @@ class AddPostFragment: Fragment(R.layout.add_post){
     var uriList: ArrayList<Uri> = arrayListOf<Uri>()
     lateinit var binding:AddPostBinding
     var uri:Uri? = null
-    companion object {
-        //static 변수
-        var boardId:Int = 1
-        var count:Int = 0
-    }
+    var count = 0;
     val dataFormat = SimpleDateFormat("yy-MM-dd-hh:mm:ss")
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     lateinit var viewModel:SnsViewModel
@@ -56,6 +54,25 @@ class AddPostFragment: Fragment(R.layout.add_post){
 
         binding = AddPostBinding.bind(view)
 
+        var boardList = java.util.ArrayList<Board>()
+        val myRef = database.getReference("board")
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onCancelled(error: DatabaseError) {
+            }
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (userSnapShot in snapshot.children) {
+                    val board = userSnapShot.getValue(Board::class.java)
+                    boardList.add(board!!)
+                }
+                var uid = Firebase.auth.currentUser?.uid.toString()
+                for(i in boardList) {
+                    if(i.uid.equals(uid)) {
+                        count+=1
+                    }
+                }
+            }
+        })
+
         //갤러리에서 사진 찾기
         binding.imageSerchButton.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
@@ -75,10 +92,11 @@ class AddPostFragment: Fragment(R.layout.add_post){
                 return@setOnClickListener
             }
 
+            System.out.println("아오!!!!!!! " + count)
             val EmailID = userEmail.split("@")
             //user의 boardList 속성에 board 식별자 추가
             var usersRef = database.getReference("users")
-            usersRef.child(EmailID[0]).child("boardList").child((boardId-1).toString()).setValue(EmailID[0].toString() + "_" + boardId)
+            usersRef.child(EmailID[0]).child("boardList").child(count.toString()).setValue(EmailID[0].toString() + "_" + count)
 
             //이미지 Storge에 업로드
             uploadImageTOFirebase(uri)
@@ -102,7 +120,7 @@ class AddPostFragment: Fragment(R.layout.add_post){
     //Firebase Storage에 이미지를 업로드 하는 함수.
     fun uploadImageTOFirebase(uri: Uri?) {
         var storage: FirebaseStorage? = FirebaseStorage.getInstance()   //FirebaseStorage 인스턴스 생성
-        var fileName = boardId.toString() + "_" + (count++) + ".png";
+        var fileName = userEmail.split("@")[0] + "_" + count.toString() + ".png";
         var storageRef = storage?.reference?.child("images")?.child(fileName)
         //파일 업로드, 다운로드, 삭제, 메타데이터 가져오기 또는 업데이트를 하기 위해 참조를 생성.
         //참조는 클라우드 파일을 가리키는 포인터라고 할 수 있음.
@@ -114,7 +132,7 @@ class AddPostFragment: Fragment(R.layout.add_post){
                 val currentTime : Long = System.currentTimeMillis() // ms로 반환
                 val data = hashMapOf(
                     "uid" to uid.toString(),
-                    "boardId" to boardId.toString(),
+                    "boardId" to count.toString(),
                     "post" to binding.postText.text.toString(),
                     "location" to binding.locationText.text.toString(),
                     "time" to dataFormat.format(currentTime).toString(),
@@ -124,15 +142,14 @@ class AddPostFragment: Fragment(R.layout.add_post){
                 val EmailID = userEmail.split("@")
                 //board에 새로운 게시물 식별자 추가
                 var boardRef = database.getReference("board")
-                boardRef = boardRef.child(EmailID[0].toString() + "_" + boardId)
+                boardRef = boardRef.child(EmailID[0].toString() + "_" + count)
                 boardRef.setValue(data)
 
                 //게시물 식별자 증가(다음 게시물을 위해)
-                boardId+=1
 
                 //해당 사용자의 imageList에 imageUri 추가
-                var usersRef = database.getReference("users")
-                usersRef.child(EmailID[0]).child("imageList").child((count-1).toString()).setValue(uri!!.toString())
+//                var usersRef = database.getReference("users")
+//                usersRef.child(EmailID[0]).child("imageList").child((count-1).toString()).setValue(uri!!.toString())
             }
 
         }.addOnFailureListener {
