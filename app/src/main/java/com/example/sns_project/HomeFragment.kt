@@ -31,20 +31,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
         val binding = HomefragmentLayoutBinding.bind(view)
 //        binding.textView.text = "HomeFragment"
         viewModel = snsActivity.viewModel
-        viewModel.myData.observe(viewLifecycleOwner, Observer {  System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
-            System.out.println(it.nickname) })
-
-        ////test
-        binding.button.setOnClickListener {
-            Firebase.auth.signOut()
-            val intent = Intent(snsActivity, MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-
-            snsActivity.finish()
-            startActivity(intent)
-//            finish()
-        }
-        /////
 
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {

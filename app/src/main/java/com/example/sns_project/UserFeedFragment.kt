@@ -53,19 +53,14 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
 
 
         viewModel.searchUserData.observe(viewLifecycleOwner, Observer {
-            System.out.println("UserfeedFragmentOberve ===========================================================")
             binding.usernameText.text = selectedName // 사용자 닉네임
             binding.postNumberText.text = viewModel.searchUserData.value!!.boardList!!.filterNot{ it == "" }.size.toString()
             binding.followingNumberText.text = viewModel.searchUserData.value!!.following!!.filterNot{ it == "" }.size.toString() // 팔로잉 수
             binding.followerNumberText.text = viewModel.searchUserData.value!!.follower!!.filterNot{ it == "" }.size.toString() // 팔로워 수
-            System.out.println("팔로잉중이면 true"+viewModel.myData.value!!.following!!.contains(viewModel.searchUserKey))
 //            setFollowButton()
         })
 
         viewModel.isFollowingUser.observe(viewLifecycleOwner, Observer {
-            System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
-            System.out.println(viewModel.isFollowingUser.value)
-            System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%")
             if(viewModel.isFollowingUser.value == true){
                 binding.followButton.setBackgroundResource(R.drawable.btn_clicked)
                 binding.followButton.setTextColor(OriginBlueColor)
@@ -84,16 +79,10 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
             if(viewModel.myData.value!!.following!!.contains(viewModel.searchUserKey)) {// 팔로우하고 있는 사용자인 경우
                 System.out.println("팔로우 취소 클릭")
                 viewModel.unfollowUser()
-//                binding.followButton.setBackgroundResource(R.drawable.btn_blue)
-//                binding.followButton.setTextColor(Color.WHITE)
-//                binding.followButton.text = "팔로우"
             }
             else{ // 팔로우 안 한 사용자인 경우
                 System.out.println("팔로우 클릭")
                 viewModel.followUser()
-//                binding.followButton.setBackgroundResource(R.drawable.btn_clicked)
-//                binding.followButton.setTextColor(OriginBlueColor)
-//                binding.followButton.text = "팔로잉"
             }
         }
     }

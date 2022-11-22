@@ -50,9 +50,12 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                 users.clear()
                 for (userSnapShot in snapshot.children) {
                     val user = userSnapShot.getValue(User::class.java)
-                    if(!user!!.nickname.equals(snsActivity.viewModel.myData.value!!.nickname))
-                        users.add(user!!.nickname)
+                    if(!user!!.nickname.equals(snsActivity.viewModel.myData.value!!.nickname)){
+                        users.add(user.nickname)
+                    }
                 }
+                arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,users)
+                listView.adapter = arrayAdapter
             }
         })
 
@@ -62,18 +65,14 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
             val name = users.get(position)
             viewModel.getSearchUserInfo(name)
             val navAction = SearchFragmentDirections.actionSearchFragmentToUserFeedFragment(name)
-            findNavController().navigate(navAction)
-//            findNavController().navigate(R.id.action_searchFragment_to_userFeedFragment)
-//            snsActivity.changeFragment(1)
-//            (activity as SnsActivity).supportFragmentManager.beginTransaction().replace(R.id.userFeedFragment, UserFeedFragment()).commit()
 
         }
+
         requireActivity().addMenuProvider(object : MenuProvider {
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.search_menu, menu)
 
                 val menuItem = menu.findItem(R.id.searchFragment)
-
                 val searchView = menuItem.actionView as SearchView
                 searchView.queryHint = "Type nickname to search"
                 val searchAutoComplete = searchView.findViewById<View>(androidx.appcompat.R.id.search_src_text) as SearchAutoComplete

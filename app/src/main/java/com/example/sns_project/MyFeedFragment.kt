@@ -60,49 +60,43 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
 
         binding.profileImg.setOnClickListener {}    //프로필 이미지를 변경해야할 경우,
 
-        //Intent로 following을 눌렀다는 표시를 FollowListActivity에서 알도록 Intent에 값을 실어서 보내야 할거 같으!
         binding.followerNumberText.setOnClickListener {       //팔로워 팔로잉 activity
-//            val intent = Intent(getActivity(), FollowListActivity::class.java)
-//            startActivity(intent)
             System.out.println("click")
             val tabIdx = 0
             val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
             findNavController().navigate(navAction)
-//            snsActivity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container,FollowerListFragment()).commit()
-
         }
 
         binding.FollowerTextView.setOnClickListener {       //팔로워 팔로잉 activity
-//            val intent = Intent(getActivity(), FollowListActivity::class.java)
-//            startActivity(intent)
             System.out.println("click")
             val tabIdx = 0
             val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
             findNavController().navigate(navAction)
-//            snsActivity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container,FollowerListFragment()).commit()
         }
 
 
         //Intent로 following을 눌렀다는 표시를 FollowListActivity에서 알도록 Intent에 값을 실어서 보내야 할거 같으!
         binding.followingNumberText.setOnClickListener {      //팔로워 팔로잉 activity
-//            val intent = Intent(getActivity(), FollowListActivity::class.java)
-//            startActivity(intent)
             System.out.println("click")
             val tabIdx = 1
             val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
             findNavController().navigate(navAction)
-//            snsActivity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container,FollowingListFragment()).commit()
         }
         binding.FollowingTextView.setOnClickListener {      //팔로워 팔로잉 activity
-//            val intent = Intent(getActivity(), FollowListActivity::class.java)
-//            startActivity(intent)
             System.out.println("click")
             val tabIdx = 1
             val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
             findNavController().navigate(navAction)
-//            snsActivity.supportFragmentManager.beginTransaction().replace(R.id.fragment_container,FollowingListFragment()).commit()
         }
 
+        binding.signoutButton.setOnClickListener {
+            Firebase.auth.signOut()
+            val intent = Intent(snsActivity, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+            snsActivity.finish()
+            startActivity(intent)
+        }
     }
 
     inner class ImageFragmentRecyclerAdapter: RecyclerView.Adapter<ImageFragmentRecyclerAdapter.ViewHolder>() {
