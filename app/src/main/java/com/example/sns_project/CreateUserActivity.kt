@@ -119,6 +119,7 @@ class CreateUserActivity : AppCompatActivity() {
             val pattern: Pattern = Patterns.EMAIL_ADDRESS
             if(!pattern.matcher(userEmail).matches()) {
                 findViewById<TextView>(R.id.EmailErrorText).text = emailRegexError
+                return@setOnClickListener
             }
 
             if (!birthNumberReg.containsMatchIn(birthday)) {            //생년월일입력이 잘못되었을때,
