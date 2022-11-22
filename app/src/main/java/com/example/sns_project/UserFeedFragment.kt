@@ -17,7 +17,7 @@ import com.example.sns_project.databinding.MyfeedfragmentLayoutBinding
 import com.example.sns_project.databinding.UserfeedfragmentLayoutBinding
 
 class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
-    public lateinit var binding: UserfeedfragmentLayoutBinding
+    lateinit var binding: UserfeedfragmentLayoutBinding
     lateinit var viewModel:SnsViewModel
     var selectedName = ""
     var OriginBlueColor = 0
