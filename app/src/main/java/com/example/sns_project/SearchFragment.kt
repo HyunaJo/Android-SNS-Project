@@ -102,13 +102,4 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
-
-    private val keyboard: InputMethodManager by lazy {
-        activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        keyboard.toggleSoftInput(InputMethodManager.RESULT_HIDDEN, 0)
-    }
 }
