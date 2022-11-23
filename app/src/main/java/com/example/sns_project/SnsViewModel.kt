@@ -14,6 +14,7 @@ import kotlinx.coroutines.launch
 class SnsViewModel(email:String):ViewModel() {
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     val usersRef = database.reference.child("users")
+    val boardRef = database.reference.child("board")
     var userEmail = "" // 현재 로그인한 사용자 이메일
     var userKey = "" // 현재 로그인한 사용자의 firebase 내 키값
 
@@ -23,6 +24,8 @@ class SnsViewModel(email:String):ViewModel() {
     var searchUserKey = ""
 
     var isFollowingUser : MutableLiveData<Boolean> = MutableLiveData<Boolean>() // 내 정보
+    var boardData : MutableLiveData<ArrayList<Board>> = MutableLiveData()
+    var boards = ArrayList<Board>()
 
     init{
         isFollowingUser.value = false
@@ -62,6 +65,7 @@ class SnsViewModel(email:String):ViewModel() {
             })
         }
     }
+
 
     fun getSearchUserInfo(searchUserNickname:String){
         viewModelScope.launch {
@@ -118,8 +122,8 @@ class SnsViewModel(email:String):ViewModel() {
         viewModelScope.launch {
             isFollowingUser.value = true
 
-            var addFollowerKey = searchUserData.value!!.follower!!.indexOf("")
-            var addFollowingKey = myData.value!!.following!!.indexOf("")
+            val addFollowerKey = searchUserData.value!!.follower!!.indexOf("")
+            val addFollowingKey = myData.value!!.following!!.indexOf("")
 
             if(addFollowerKey >= 0){
                 usersRef.child(searchUserKey).child("follower").child((addFollowerKey).toString()).setValue(userKey)
@@ -152,5 +156,4 @@ class SnsViewModel(email:String):ViewModel() {
     fun getKey(email:String):String{
         return email.split('@')[0]
     }
-
 }

@@ -21,7 +21,6 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
     lateinit var viewModel:SnsViewModel
@@ -71,7 +70,6 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
             findNavController().navigate(navAction)
         }
 
-
         //Intent로 following을 눌렀다는 표시를 FollowListActivity에서 알도록 Intent에 값을 실어서 보내야 할거 같으!
         binding.followingNumberText.setOnClickListener {      //팔로워 팔로잉 activity
             System.out.println("click")
@@ -94,6 +92,8 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
             snsActivity.finish()
             startActivity(intent)
         }
+
+        val adapter = ImageFragmentRecyclerAdapter()
     }
 
     inner class ImageFragmentRecyclerAdapter: RecyclerView.Adapter<ImageFragmentRecyclerAdapter.ViewHolder>() {
@@ -146,6 +146,14 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
 
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             val profileImage = itemView.findViewById<ImageView>(R.id.MyFeedGridImage)
+            init{
+                profileImage.setOnClickListener{
+                    System.out.println("==================================")
+                    System.out.println(profileImage)
+                    System.out.println("==================================")
+
+                }
+            }
         }
 
         override fun getItemCount(): Int {

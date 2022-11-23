@@ -24,6 +24,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class SearchFragment: Fragment(R.layout.searchfragment_layout){
     lateinit var arrayAdapter:ArrayAdapter<String>
@@ -31,6 +33,7 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     val usersRef = database.getReference("users")
     var users = ArrayList<String>()
+    var displayUsers = ArrayList<String>()
     lateinit var viewModel:SnsViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,15 +57,23 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                         users.add(user.nickname)
                     }
                 }
-                arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,users)
-                listView.adapter = arrayAdapter
+                displayUsers.clear()
+                displayUsers.addAll(users)
+                arrayAdapter.notifyDataSetChanged()
+                System.out.println(users)
+                System.out.println(displayUsers)
+//                arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,users)
+//                listView.adapter = arrayAdapter
             }
         })
 
-        arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,users)
+        displayUsers.addAll(users)
+        arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,displayUsers)
         listView.adapter = arrayAdapter
         listView.setOnItemClickListener{ parent, view, position, id ->
-            val name = users.get(position)
+            System.out.println("position ==> $position")
+            System.out.println("id ==> $id")
+            val name = displayUsers.get(position)
             viewModel.getSearchUserInfo(name)
             val navAction = SearchFragmentDirections.actionSearchFragmentToUserFeedFragment(name)
             findNavController().navigate(navAction)
@@ -80,12 +91,32 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                 searchView.clearFocus()
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                     override fun onQueryTextSubmit(query: String?): Boolean {
-                        arrayAdapter.filter.filter(query)
+//                        arrayAdapter.filter.filter(query)
                         return false
                     }
 
                     override fun onQueryTextChange(query: String?): Boolean {
-                        arrayAdapter.filter.filter(query)
+                        if(query!!.isNotEmpty()){
+                            displayUsers.clear()
+                            var search = query.lowercase(Locale.getDefault())
+                            users.forEach{
+                                if(it.lowercase(Locale.getDefault()).contains(search)){
+                                    displayUsers.add(it)
+                                }
+                            }
+//                            arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,displayUsers)
+//                            listView.adapter = arrayAdapter
+                            arrayAdapter.notifyDataSetChanged()
+                        }
+                        else{
+                            displayUsers.clear()
+                            displayUsers.addAll(users)
+//                            arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,displayUsers)
+//                            listView.adapter = arrayAdapter
+                            arrayAdapter.notifyDataSetChanged()
+                        }
+//                        arrayAdapter.filter.filter(query)
+
                         return false
                     }
                 })
