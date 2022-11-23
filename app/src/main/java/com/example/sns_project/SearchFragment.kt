@@ -65,7 +65,7 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
             val name = users.get(position)
             viewModel.getSearchUserInfo(name)
             val navAction = SearchFragmentDirections.actionSearchFragmentToUserFeedFragment(name)
-
+            findNavController().navigate(navAction)
         }
 
         requireActivity().addMenuProvider(object : MenuProvider {
