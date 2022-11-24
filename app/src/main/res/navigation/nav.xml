@@ -24,6 +24,12 @@
         <action
             android:id="@+id/action_myFeedFragment_to_followListFragment"
             app:destination="@id/followListFragment" />
+        <action
+            android:id="@+id/action_myFeedFragment_to_boardFragment"
+            app:destination="@id/boardFragment" />
+        <action
+            android:id="@+id/action_myFeedFragment_to_boardFragment2"
+            app:destination="@id/boardFragment" />
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -58,5 +64,16 @@
             android:name="tabIdx"
             app:argType="integer"
             android:defaultValue="0" />
+    </fragment>
+    <fragment
+        android:id="@+id/boardFragment"
+        android:name="com.example.sns_project.MyBoardFragment"
+        android:label="BoardFragment" >
+        <argument
+            android:name="boardIdx"
+            app:argType="integer" />
+        <argument
+            android:name="nickname"
+            app:argType="string" />
     </fragment>
 </navigation>

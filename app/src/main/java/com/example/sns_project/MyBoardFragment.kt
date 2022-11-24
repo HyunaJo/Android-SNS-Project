@@ -1,0 +1,47 @@
+package com.example.sns_project
+
+import android.os.Bundle
+import android.view.*
+import android.widget.ListView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
+import com.example.sns_project.databinding.BoardItemBinding
+import java.util.*
+import kotlin.collections.ArrayList
+
+class MyBoardFragment : Fragment(R.layout.board_item) {
+    lateinit var viewModel: SnsViewModel
+    var listviewAdapter = HomeListViewAdapter()
+    lateinit var listView: ListView
+    lateinit var binding: BoardItemBinding
+    lateinit var snsActivity: SnsActivity
+    lateinit var myBoardList : ArrayList<Board>
+    lateinit var selectedBoard:Board
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = BoardItemBinding.inflate(inflater, container, false)
+        snsActivity = activity as SnsActivity
+        snsActivity.findViewById<TextView>(R.id.toolbarTextView).text=""
+        viewModel = snsActivity.viewModel
+        myBoardList = viewModel.myBoardData
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val arg: MyBoardFragmentArgs by navArgs()
+        val boardIdx = arg.boardIdx
+        selectedBoard = myBoardList[boardIdx]
+        val nickname = arg.nickname
+        binding.postID.text = nickname
+        binding.postID2.text = nickname
+        binding.postContent.text = selectedBoard.post
+        binding.likeCountText.text = "좋아요 "+selectedBoard.likes!!.size.toString()+"개"
+    }
+}

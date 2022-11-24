@@ -98,11 +98,11 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
 
     inner class ImageFragmentRecyclerAdapter: RecyclerView.Adapter<ImageFragmentRecyclerAdapter.ViewHolder>() {
         val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
+        var boardList : ArrayList<Board> = ArrayList<Board>()
         var imageList: ArrayList<String> = arrayListOf<String>()
         var imageUrl: String = ""
         init {
             // 내 사진의 url만 찾아서 imageList에 저장
-            var boardList = java.util.ArrayList<Board>()
             val myRef = database.getReference("board")
             myRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -127,6 +127,7 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
                         }
                     }
                     notifyDataSetChanged()
+                    viewModel.myBoardData = boardList
                     System.out.println(imageList)
                 }
             })
@@ -148,10 +149,11 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
             val profileImage = itemView.findViewById<ImageView>(R.id.MyFeedGridImage)
             init{
                 profileImage.setOnClickListener{
+                    System.out.println("===============click image===================")
+                    System.out.println(boardList[adapterPosition].post)
                     System.out.println("==================================")
-                    System.out.println(profileImage)
-                    System.out.println("==================================")
-
+                    val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToBoardFragment(adapterPosition, viewModel.myData.value!!.nickname)
+                    findNavController().navigate(navAction)
                 }
             }
         }
