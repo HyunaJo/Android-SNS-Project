@@ -24,7 +24,7 @@ class SnsViewModel(email:String):ViewModel() {
     var searchUserKey = ""
 
     var isFollowingUser : MutableLiveData<Boolean> = MutableLiveData<Boolean>() // 내 정보
-    lateinit var myBoardData : ArrayList<Board>
+    var myBoardData = ArrayList<Board>()
     var boardData : MutableLiveData<ArrayList<Board>> = MutableLiveData()
     var boards = ArrayList<Board>()
 

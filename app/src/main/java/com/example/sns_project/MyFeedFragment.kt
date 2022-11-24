@@ -124,10 +124,11 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
                         if(i.uid.equals(uid)) {
                             System.out.println("가잦갖가ㅏ: " + i.imageUrl)
                             imageList.add(i.imageUrl)
+                            viewModel.myBoardData.add(i)
                         }
                     }
                     notifyDataSetChanged()
-                    viewModel.myBoardData = boardList
+
                     System.out.println(imageList)
                 }
             })
