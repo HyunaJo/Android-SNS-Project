@@ -87,14 +87,20 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
             boardRef.addChildEventListener(object :
                 ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    System.out.println("==============================================")
+
                     val board = snapshot.getValue(Board::class.java)
+//                    println(board)
                     if(followings.contains(board!!.writer)){
                         listViewItemList.add(board)
-                        listViewItemList.sortWith(Comparator { o1, o2 -> o2.time.compareTo(o1.time) })
-                        notifyDataSetChanged()
                     }
-                    System.out.println(followings)
+                    listViewItemList.sortWith(Comparator { o1, o2 -> o2.time.compareTo(o1.time) })
+//                    println("======================================================")
+//                    for(i in listViewItemList){
+//                        println(i)
+//                    }
+//                    println("======================================================")
+//                    notifyDataSetChanged()
+//                    System.out.println(listViewItemList)
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
