@@ -6,6 +6,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
 import com.example.sns_project.databinding.BoardItemBinding
 import java.util.*
 import kotlin.collections.ArrayList
@@ -43,5 +44,7 @@ class MyBoardFragment : Fragment(R.layout.board_item) {
         binding.postID2.text = nickname
         binding.postContent.text = selectedBoard.post
         binding.likeCountText.text = "좋아요 "+selectedBoard.likes!!.size.toString()+"개"
+
+        Glide.with(snsActivity.baseContext).load(selectedBoard.imageUrl).into(binding.postImageView)
     }
 }

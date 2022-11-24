@@ -66,11 +66,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
         listviewAdapter = HomeListViewAdapter()
         listView = binding.homeListView
         listView.adapter = listviewAdapter
-//        viewModel.boardData.observe(viewLifecycleOwner, Observer {
-//            System.out.println("=============================++++++++++++++++++++++++")
-//
-////            listviewAdapter.changeArrayList(viewModel.boardData.value!!)
-//        })
 
     }
 }
