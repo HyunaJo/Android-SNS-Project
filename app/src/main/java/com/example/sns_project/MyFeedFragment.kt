@@ -143,16 +143,16 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
             val width = resources.displayMetrics.widthPixels / 3
             holder.profileImage.layoutParams = LinearLayoutCompat.LayoutParams(width, width)
             Glide.with(holder.itemView.context).load(imageList[position]).into(holder.profileImage)
-            System.out.println(imageList.size)
+//            System.out.println(imageList.size)
         }
 
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
             val profileImage = itemView.findViewById<ImageView>(R.id.MyFeedGridImage)
             init{
                 profileImage.setOnClickListener{
-                    System.out.println("===============click image===================")
-                    System.out.println(boardList[adapterPosition].post)
-                    System.out.println("==================================")
+//                    System.out.println("===============click image===================")
+//                    System.out.println(boardList[adapterPosition].post)
+//                    System.out.println("==================================")
                     val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToBoardFragment(adapterPosition, viewModel.myData.value!!.nickname)
                     findNavController().navigate(navAction)
                 }

@@ -14,7 +14,6 @@ import kotlin.collections.ArrayList
 
 class MyBoardFragment : Fragment(R.layout.myboardfragment_layout) {
     lateinit var viewModel: SnsViewModel
-    var listviewAdapter = HomeListViewAdapter()
     lateinit var listView: ListView
     lateinit var binding: MyboardfragmentLayoutBinding
     lateinit var snsActivity: SnsActivity

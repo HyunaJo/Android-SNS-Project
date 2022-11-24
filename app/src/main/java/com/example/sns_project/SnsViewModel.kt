@@ -14,25 +14,24 @@ import kotlinx.coroutines.launch
 class SnsViewModel(email:String):ViewModel() {
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     val usersRef = database.reference.child("users")
-    val boardRef = database.reference.child("board")
     var userEmail = "" // 현재 로그인한 사용자 이메일
     var userKey = "" // 현재 로그인한 사용자의 firebase 내 키값
 
     var myData : MutableLiveData<User> = MutableLiveData<User>() // 내 정보
+    var followingUserData: ArrayList<User> = ArrayList<User>()
     var searchUserData :  MutableLiveData<User> = MutableLiveData<User>() // 검색해서 선택한 사용자 정보
     var searchUserEmail = ""
     var searchUserKey = ""
 
-    var isFollowingUser : MutableLiveData<Boolean> = MutableLiveData<Boolean>() // 내 정보
+    var isFollowingUser : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var myBoardData = ArrayList<Board>()
-    var boardData : MutableLiveData<ArrayList<Board>> = MutableLiveData()
-    var boards = ArrayList<Board>()
 
     init{
         isFollowingUser.value = false
         userEmail = email
         userKey = getKey(userEmail)
         getMyInfo()
+        getFollowingUserData()
     }
 
     fun getMyInfo(){
@@ -67,6 +66,22 @@ class SnsViewModel(email:String):ViewModel() {
         }
     }
 
+    fun getFollowingUserData(){
+        viewModelScope.launch {
+            usersRef.addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for (userSnapShot in snapshot.children) {
+                        val user = userSnapShot.getValue(User::class.java)
+                        if(myData.value!!.following!!.contains(getKey(user!!.email)))
+                            followingUserData.add(user)
+                    }
+                }
+            })
+        }
+    }
 
     fun getSearchUserInfo(searchUserNickname:String){
         viewModelScope.launch {
