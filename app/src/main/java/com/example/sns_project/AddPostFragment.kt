@@ -132,7 +132,7 @@ class AddPostFragment: Fragment(R.layout.add_post){
                 val currentTime : Long = System.currentTimeMillis() // ms로 반환
                 val data = hashMapOf(
                     "uid" to uid.toString(),
-                    "email" to userEmail.split("@")[0],
+                    "writer" to userEmail.split("@")[0],
                     "boardId" to count.toString(),
                     "post" to binding.postText.text.toString(),
                     "location" to binding.locationText.text.toString(),
