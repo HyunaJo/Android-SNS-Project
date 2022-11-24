@@ -58,8 +58,7 @@ class HomeListViewAdapter :BaseAdapter() {
     }
 
     override fun getItemId(position: Int): Long {
-        System.out.println("getItemId =====================> $position")
-        return 0
+        return position.toLong()
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
@@ -92,16 +91,6 @@ class HomeListViewAdapter :BaseAdapter() {
         commentButton.setOnClickListener {
             System.out.println("댓글 클릭")
         }
-
         return view
-    }
-
-    fun changeArrayList(boards:ArrayList<Board>){
-        listViewItemList = boards
-    }
-
-    // 아이템 데이터 추가를 위한 함수
-    fun addItem(board : Board) {
-        listViewItemList.add(board)
     }
 }
