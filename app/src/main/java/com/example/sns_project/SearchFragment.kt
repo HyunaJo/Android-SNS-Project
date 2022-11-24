@@ -28,7 +28,7 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class SearchFragment: Fragment(R.layout.searchfragment_layout){
-    lateinit var arrayAdapter:ArrayAdapter<String>
+    lateinit var arrayAdapter:SearchListAdapter
     lateinit var listView:ListView
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     val usersRef = database.getReference("users")
@@ -60,15 +60,14 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                 displayUsers.clear()
                 displayUsers.addAll(users)
                 arrayAdapter.notifyDataSetChanged()
-                System.out.println(users)
-                System.out.println(displayUsers)
-//                arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,users)
-//                listView.adapter = arrayAdapter
+                arrayAdapter.changeArrayList(displayUsers)
+//                System.out.println(users)
+//                System.out.println(displayUsers)
             }
         })
 
         displayUsers.addAll(users)
-        arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,displayUsers)
+        arrayAdapter = SearchListAdapter()
         listView.adapter = arrayAdapter
         listView.setOnItemClickListener{ parent, view, position, id ->
             System.out.println("position ==> $position")
@@ -91,7 +90,6 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                 searchView.clearFocus()
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
                     override fun onQueryTextSubmit(query: String?): Boolean {
-//                        arrayAdapter.filter.filter(query)
                         return false
                     }
 
@@ -104,19 +102,13 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                                     displayUsers.add(it)
                                 }
                             }
-//                            arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,displayUsers)
-//                            listView.adapter = arrayAdapter
                             arrayAdapter.notifyDataSetChanged()
                         }
                         else{
                             displayUsers.clear()
                             displayUsers.addAll(users)
-//                            arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,displayUsers)
-//                            listView.adapter = arrayAdapter
                             arrayAdapter.notifyDataSetChanged()
                         }
-//                        arrayAdapter.filter.filter(query)
-
                         return false
                     }
                 })

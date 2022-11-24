@@ -32,6 +32,7 @@ class HomeListViewAdapter :BaseAdapter() {
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 val board = snapshot.getValue(Board::class.java)
                 listViewItemList.add(board!!)
+                notifyDataSetChanged()
             }
 
             override fun onChildRemoved(snapshot: DataSnapshot) {
@@ -64,7 +65,7 @@ class HomeListViewAdapter :BaseAdapter() {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
         var view = convertView
         val context = parent!!.context
-//
+
         if (view == null) {
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
             view = inflater.inflate(R.layout.board_item, parent, false)
