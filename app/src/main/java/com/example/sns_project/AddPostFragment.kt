@@ -144,12 +144,6 @@ class AddPostFragment: Fragment(R.layout.add_post){
                 var boardRef = database.getReference("board")
                 boardRef = boardRef.child(EmailID[0].toString() + "_" + count)
                 boardRef.setValue(data)
-
-                //게시물 식별자 증가(다음 게시물을 위해)
-
-                //해당 사용자의 imageList에 imageUri 추가
-//                var usersRef = database.getReference("users")
-//                usersRef.child(EmailID[0]).child("imageList").child((count-1).toString()).setValue(uri!!.toString())
             }
 
         }.addOnFailureListener {

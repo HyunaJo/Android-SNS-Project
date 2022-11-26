@@ -55,6 +55,9 @@
     <action
         android:id="@+id/action_userFeedFragment_to_followListFragment"
         app:destination="@id/followListFragment" />
+        <action
+            android:id="@+id/action_userFeedFragment_to_userBoardFragment3"
+            app:destination="@id/userBoardFragment3" />
 
     </fragment>
     <fragment
@@ -94,4 +97,16 @@
             android:name="postContent"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/userBoardFragment3"
+        android:name="com.example.sns_project.UserBoardFragment"
+        android:label="UserBoardFragment" >
+        <argument
+            android:name="selectUserName"
+            app:argType="string" />
+        <argument
+            android:name="boardIdx"
+            app:argType="integer" />
+    </fragment>
+
 </navigation>

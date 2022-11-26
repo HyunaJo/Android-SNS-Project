@@ -25,7 +25,6 @@ import java.util.*
 class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
     lateinit var viewModel:SnsViewModel
     lateinit var binding:MyfeedfragmentLayoutBinding
-    lateinit var imageUrl:Uri
 
     override fun onCreateView(
         inflater: LayoutInflater,

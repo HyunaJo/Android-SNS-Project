@@ -8,5 +8,4 @@ data class User (
     val boardList: ArrayList<String>? = ArrayList(),
     val following: ArrayList<String>? = ArrayList(),
     val follower: ArrayList<String>? = ArrayList(),
-    val imageList: ArrayList<String>? = ArrayList()
 )

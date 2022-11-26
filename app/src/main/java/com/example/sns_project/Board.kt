@@ -8,7 +8,6 @@ data class Board (
     val post: String? = "",
     val time: String = "",
     val uid: String = "",
-    var comments : ArrayList<HashMap<String,String>>? = ArrayList<HashMap<String,String>>()
-//    val likes : ArrayList<String>? = ArrayList<String>()
+    var comments : ArrayList<HashMap<String,String>>? = ArrayList<HashMap<String,String>>(),
+    val likes : HashMap<String,String>? = HashMap<String,String>(),
 )
-
