@@ -135,7 +135,6 @@ class AddPostFragment: Fragment(R.layout.add_post){
                     "writer" to userEmail.split("@")[0],
                     "boardId" to count.toString(),
                     "post" to binding.postText.text.toString(),
-                    "location" to binding.locationText.text.toString(),
                     "time" to dataFormat.format(currentTime).toString(),
                     "imageUrl" to uri!!.toString(),
                 )
