@@ -34,7 +34,7 @@ class AddPostFragment: Fragment(R.layout.add_post){
     lateinit var binding:AddPostBinding
     var uri:Uri? = null
     var count = 0;
-    val dataFormat = SimpleDateFormat("yy-MM-dd-hh:mm:ss")
+    val dataFormat = SimpleDateFormat("yy-MM-dd-HH:mm:ss")
     val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
     lateinit var viewModel:SnsViewModel
     var selectedName = ""

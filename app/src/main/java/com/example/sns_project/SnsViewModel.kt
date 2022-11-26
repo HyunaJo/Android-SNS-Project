@@ -25,6 +25,7 @@ class SnsViewModel(email:String):ViewModel() {
 
     var isFollowingUser : MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var myBoardData = ArrayList<Board>()
+    var boardData = ArrayList<Board>() // 모든 유저의 boardData
 
     init{
         isFollowingUser.value = false

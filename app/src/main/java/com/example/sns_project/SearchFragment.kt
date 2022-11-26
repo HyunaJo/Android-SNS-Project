@@ -61,8 +61,6 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
                 displayUsers.addAll(users)
                 arrayAdapter.notifyDataSetChanged()
                 arrayAdapter.changeArrayList(displayUsers)
-//                System.out.println(users)
-//                System.out.println(displayUsers)
             }
         })
 

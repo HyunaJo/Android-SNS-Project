@@ -40,7 +40,7 @@ class MyBoardFragment : Fragment(R.layout.myboardfragment_layout) {
         val boardIdx = arg.boardIdx
         selectedBoard = myBoardList[boardIdx]
         val nickname = arg.nickname
-        binding.postID.text = nickname
+        binding.postWriter.text = nickname
 //        binding.postID2.text = nickname
         binding.postContent.text = selectedBoard.post
 //        binding.likeCountText.text = "좋아요 "+selectedBoard.likes!!.size.toString()+"개"
