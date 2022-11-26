@@ -28,9 +28,7 @@
             android:id="@+id/followingTabItem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="팔로잉"
-            tools:layout_editor_absoluteX="138dp"
-            tools:layout_editor_absoluteY="104dp" />
+            android:text="팔로잉" />
 
     </com.google.android.material.tabs.TabLayout>
 

@@ -8,5 +8,5 @@ data class Board (
     val post: String? = "",
     val time: String = "",
     val uid: String = "",
-    val likes : ArrayList<String>? = ArrayList<String>()
+//    val likes : ArrayList<String>? = ArrayList<String>()
 )

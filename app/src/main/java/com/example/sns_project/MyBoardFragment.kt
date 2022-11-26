@@ -43,7 +43,7 @@ class MyBoardFragment : Fragment(R.layout.myboardfragment_layout) {
         binding.postID.text = nickname
 //        binding.postID2.text = nickname
         binding.postContent.text = selectedBoard.post
-        binding.likeCountText.text = "좋아요 "+selectedBoard.likes!!.size.toString()+"개"
+//        binding.likeCountText.text = "좋아요 "+selectedBoard.likes!!.size.toString()+"개"
 
         Glide.with(snsActivity.baseContext).load(selectedBoard.imageUrl).into(binding.postImageView)
     }

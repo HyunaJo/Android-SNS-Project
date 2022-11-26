@@ -41,6 +41,7 @@ class SnsViewModel(email:String):ViewModel() {
                     System.out.println(snapshot.value)
                     val user = snapshot.getValue(User::class.java)
                     myData.value = user!!
+                    System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                     System.out.println(myData.value!!)
                 }
 
@@ -141,6 +142,8 @@ class SnsViewModel(email:String):ViewModel() {
             val addFollowerKey = searchUserData.value!!.follower!!.indexOf("")
             val addFollowingKey = myData.value!!.following!!.indexOf("")
 
+            System.out.println(searchUserData.value!!.follower!!)
+            System.out.println(myData.value!!.following!!)
             if(addFollowerKey >= 0){
                 usersRef.child(searchUserKey).child("follower").child((addFollowerKey).toString()).setValue(userKey)
             }

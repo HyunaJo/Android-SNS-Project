@@ -17,9 +17,11 @@ import com.example.sns_project.databinding.HomefragmentLayoutBinding
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 class HomeFragment:Fragment(R.layout.homefragment_layout) {
@@ -61,12 +63,22 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
             }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        if(viewModel.myData.value!=null){
+            listviewAdapter = HomeListViewAdapter(viewModel.myData.value!!.following!!)
+            listView = binding.homeListView
+            listView.adapter = listviewAdapter
+        }
+
         viewModel.myData.observe(viewLifecycleOwner, Observer {
-            val followings = viewModel.myData.value!!.following!! // 게시물 나타낼 유저 이름들
-            followings.add(viewModel.userKey) // 내 게시물도 나타내야함
+            val followings = viewModel.myData.value!!.following!!.filterNot { it == "" } as ArrayList<String>// 게시물 나타낼 유저 이름들
+//            followings.add(viewModel.userKey) // 내 게시물도 나타내야함
+//            if()
             listviewAdapter = HomeListViewAdapter(followings)
             listView = binding.homeListView
             listView.adapter = listviewAdapter
+            listviewAdapter.notifyDataSetChanged()
+            System.out.println("====================followings===================")
+            System.out.println(listviewAdapter.followings)
 //            setFollowButton()
         })
 
@@ -78,16 +90,27 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
         val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
         val boardRef = database.reference.child("board")
         private var listViewItemList = ArrayList<Board>()
-        private var followings = ArrayList<String>()
+        var followings = ArrayList<String>()
 
 
         init{
 //            followings = viewModel.myData.value!!.following!!
             this.followings = followings
+//            boardRef.addValueEventListener(object:ValueEventListener{
+//                override fun onDataChange(snapshot: DataSnapshot) {
+//                    for(board in snapshot.children){
+//                        System.out.println(board)
+//                    }
+//                }
+//
+//                override fun onCancelled(error: DatabaseError) {
+//                }
+//
+//            })
             boardRef.addChildEventListener(object :
                 ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
+                    System.out.println(snapshot)
                     val board = snapshot.getValue(Board::class.java)
 //                    println(board)
                     if(followings.contains(board!!.writer)){
@@ -99,7 +122,7 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
 //                        println(i)
 //                    }
 //                    println("======================================================")
-//                    notifyDataSetChanged()
+                    notifyDataSetChanged()
 //                    System.out.println(listViewItemList)
                 }
 
@@ -163,10 +186,11 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
                 }
             }
 
+            System.out.println("bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb")
             postID.text = nickname
             postID2.text = nickname
             postContent.text = listViewItem.post
-            likeCount.text = "좋아요 "+listViewItem.likes!!.size.toString()+"개"
+//            likeCount.text = "좋아요 "+listViewItem.likes!!.size.toString()+"개"
             Glide.with(context).load(listViewItem.imageUrl).into(postImgView)
 
             likeButton.setOnClickListener {
