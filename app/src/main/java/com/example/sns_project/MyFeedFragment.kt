@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
     lateinit var viewModel:SnsViewModel
@@ -56,14 +57,12 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
         binding.profileImg.setOnClickListener {}    //프로필 이미지를 변경해야할 경우,
 
         binding.followerNumberText.setOnClickListener {       //팔로워 팔로잉 activity
-            System.out.println("click")
             val tabIdx = 0
             val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
             findNavController().navigate(navAction)
         }
 
         binding.FollowerTextView.setOnClickListener {       //팔로워 팔로잉 activity
-            System.out.println("click")
             val tabIdx = 0
             val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
             findNavController().navigate(navAction)
@@ -71,13 +70,11 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
 
         //Intent로 following을 눌렀다는 표시를 FollowListActivity에서 알도록 Intent에 값을 실어서 보내야 할거 같으!
         binding.followingNumberText.setOnClickListener {      //팔로워 팔로잉 activity
-            System.out.println("click")
             val tabIdx = 1
             val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
             findNavController().navigate(navAction)
         }
         binding.FollowingTextView.setOnClickListener {      //팔로워 팔로잉 activity
-            System.out.println("click")
             val tabIdx = 1
             val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
             findNavController().navigate(navAction)
@@ -100,6 +97,8 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
         var boardList : ArrayList<Board> = ArrayList<Board>()
         var imageList: ArrayList<String> = arrayListOf<String>()
         var imageUrl: String = ""
+        var myBoardList : ArrayList<Board> = ArrayList()
+
         init {
             // 내 사진의 url만 찾아서 imageList에 저장
             val myRef = database.getReference("board")
@@ -109,23 +108,22 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (userSnapShot in snapshot.children) {
                         val board = userSnapShot.getValue(Board::class.java)
-                        boardList.add(board!!)
+                        board!!.boardKey = board.boardId+"_"+board.writer
+                        boardList.add(board)
                     }
                     var userEmail = Firebase.auth.currentUser?.email.toString()
                     var uid = Firebase.auth.currentUser?.uid.toString()
 
                     if (boardList.size > 1) {
-                        Collections.sort(
-                            boardList
-                        ) { o1, o2 -> o2.time.compareTo(o1.time) }
+                        boardList.sortWith(Comparator { o1, o2 -> o2.time.compareTo(o1.time) })
                     }
                     for(i in boardList) {
                         if(i.uid.equals(uid)) {
-                            System.out.println("가잦갖가ㅏ: " + i.imageUrl)
                             imageList.add(i.imageUrl)
-                            viewModel.myBoardData.add(i)
+                            myBoardList.add(i)
                         }
                     }
+                    viewModel.myBoardData = myBoardList
                     notifyDataSetChanged()
 
                     System.out.println(imageList)
@@ -149,9 +147,6 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
             val profileImage = itemView.findViewById<ImageView>(R.id.MyFeedGridImage)
             init{
                 profileImage.setOnClickListener{
-//                    System.out.println("===============click image===================")
-//                    System.out.println(boardList[adapterPosition].post)
-//                    System.out.println("==================================")
                     val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToBoardFragment(adapterPosition, viewModel.myData.value!!.nickname)
                     findNavController().navigate(navAction)
                 }

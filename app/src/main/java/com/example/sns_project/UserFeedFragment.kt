@@ -69,7 +69,6 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
             binding.postNumberText.text = viewModel.searchUserData.value!!.boardList!!.filterNot{ it == "" }.size.toString()
             binding.followingNumberText.text = viewModel.searchUserData.value!!.following!!.filterNot{ it == "" }.size.toString() // 팔로잉 수
             binding.followerNumberText.text = viewModel.searchUserData.value!!.follower!!.filterNot{ it == "" }.size.toString() // 팔로워 수
-//            setFollowButton()
         })
 
         viewModel.isFollowingUser.observe(viewLifecycleOwner, Observer {
@@ -101,25 +100,7 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
             }
         }
 
-        binding.recyclerview?.adapter = ImageFragmentRecyclerAdapter()
-    }
-
-    fun setFollowButton(){
-        System.out.println("button 설정")
-        System.out.println(viewModel.myData.value!!.following!!)
-        System.out.println(viewModel.searchUserKey)
-        if(viewModel.myData.value!!.following!!.contains(viewModel.searchUserKey)){ // 팔로우하고 있는 사용자인 경우
-            System.out.println("팔로우하고 있는 사용자")
-            binding.followButton.setBackgroundResource(R.drawable.btn_clicked)
-            binding.followButton.setTextColor(OriginBlueColor)
-            binding.followButton.text = "팔로잉"
-        }
-        else{ // 팔로우 안 한 사용자인 경우
-            System.out.println("팔로우 안하고 있는 사용자")
-            binding.followButton.setBackgroundResource(R.drawable.btn_blue)
-            binding.followButton.setTextColor(Color.WHITE)
-            binding.followButton.text = "팔로우"
-        }
+        binding.recyclerview.adapter = ImageFragmentRecyclerAdapter()
     }
 
     inner class ImageFragmentRecyclerAdapter: RecyclerView.Adapter<ImageFragmentRecyclerAdapter.ViewHolder>() {
@@ -140,14 +121,10 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
 
                     //날짜순 정렬
                     if (boardList.size > 1) {
-                        Collections.sort(
-                            boardList
-                        ) { o1, o2 -> o2.time.compareTo(o1.time) }
+                        boardList.sortWith(Comparator { o1, o2 -> o2.time.compareTo(o1.time) })
                     }
-                    System.out.println("userEmail: " + userEmail)
                     for(i in boardList) {
                         if(i.writer.equals(userEmail)) {
-                            System.out.println("가잦갖가ㅏ: " + i.imageUrl)
                             imageList.add(i.imageUrl)
                         }
                     }
@@ -175,6 +152,7 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
                 profileImage.setOnClickListener{
                     System.out.println("===============click image===================")
                     System.out.println(boardList[adapterPosition].post)
+                    System.out.println(adapterPosition)
                     System.out.println("==================================")
                     val navAction = UserFeedFragmentDirections.actionUserFeedFragmentToUserBoardFragment3(selectedName, adapterPosition)
                     findNavController().navigate(navAction)
