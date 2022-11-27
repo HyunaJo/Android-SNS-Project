@@ -254,6 +254,29 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
                 }
             })
 
+            boardRef.addChildEventListener(object :
+                ChildEventListener {
+                override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
+                    if(snapshot.getValue()?.equals("true") == true) count+=1
+                    likeCount.text = "좋아요 " + count.toString() + "개"
+                }
+
+                override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
+                }
+
+                override fun onChildRemoved(snapshot: DataSnapshot) {
+
+                }
+
+                override fun onChildMoved(snapshot: DataSnapshot, previousChildName: String?) {
+                    TODO("Not yet implemented")
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+            })
+
             return view
         }
     }
