@@ -80,7 +80,6 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
             findNavController().navigate(navAction)
         }
 
-        //Intent로 following을 눌렀다는 표시를 FollowListActivity에서 알도록 Intent에 값을 실어서 보내야 할거 같으!
         binding.followingNumberText.setOnClickListener {      //팔로워 팔로잉 activity
             val tabIdx = 1
             val navAction = UserFeedFragmentDirections.actionUserFeedFragmentToFollowListFragment(viewModel.searchUserKey,tabIdx)
@@ -109,11 +108,9 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
 
         binding.followButton.setOnClickListener {
             if(viewModel.myData.value!!.following!!.contains(viewModel.searchUserKey)) {// 팔로우하고 있는 사용자인 경우
-                System.out.println("팔로우 취소 클릭")
                 viewModel.unfollowUser()
             }
             else{ // 팔로우 안 한 사용자인 경우
-                System.out.println("팔로우 클릭")
                 viewModel.followUser()
             }
         }

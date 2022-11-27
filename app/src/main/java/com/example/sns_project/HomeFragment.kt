@@ -98,10 +98,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
                     }
                     listViewItemList.sortWith(Comparator { o1, o2 -> o2.time.compareTo(o1.time) })
                     viewModel.boardData = listViewItemList
-                    for(i in listViewItemList){
-                        System.out.println(i)
-                        System.out.println(i.time)
-                    }
                     notifyDataSetChanged()
                 }
 
@@ -173,7 +169,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
             else{
                 for(user in viewModel.followingUserData){
                     if(user.email.split("@")[0].equals(listViewItem.writer)){
-                        System.out.println(user.email)
                         nickname = user.nickname
                         break
                     }
@@ -208,8 +203,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
 
                     //좋아요 버튼 클릭
                     likeButton.setOnClickListener() {
-                        System.out.println("좋아요 버튼 클릭! ")
-
                         if(flag.equals("true")) { //좋아요 취소
                             boardRef.child(boardKey).child("likes").child(userEmail).setValue("false")
                             board.likes?.set(userEmail,"false")
@@ -230,14 +223,12 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
                 ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     if(snapshot.getValue()?.equals("true") == true) count+=1
-                    println(count)
                     likeCount.text = "좋아요 " + count.toString() + "개"
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                     if(snapshot.getValue()?.equals("true") == true) count+=1
                     else if(snapshot.getValue()?.equals("false") == true) count-=1;
-                    println(count)
                     likeCount.text = "좋아요 " + count.toString() + "개"
                 }
 

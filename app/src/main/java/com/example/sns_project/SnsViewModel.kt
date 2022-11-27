@@ -39,17 +39,13 @@ class SnsViewModel(email:String):ViewModel() {
         viewModelScope.launch {
             usersRef.orderByChild("email").equalTo(userEmail).addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    System.out.println(snapshot.value)
                     val user = snapshot.getValue(User::class.java)
                     myData.value = user!!
-                    System.out.println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-                    System.out.println(myData.value!!)
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                     val user = snapshot.getValue(User::class.java)
                     myData.value = user!!
-                    System.out.println(myData.value!!)
                 }
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
@@ -89,26 +85,21 @@ class SnsViewModel(email:String):ViewModel() {
         viewModelScope.launch {
             usersRef.orderByChild("nickname").equalTo(searchUserNickname).addChildEventListener(object : ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-                    System.out.println("################ onChildAdded ######################")
                     val user = snapshot.getValue(User::class.java)
                     searchUserData.value = user!!
                     searchUserEmail = searchUserData.value!!.email
                     searchUserKey = getKey(searchUserEmail)
-                    System.out.println(searchUserData.value)
                     isFollowingUser.value = myData.value!!.following!!.contains(searchUserKey)
 
                 }
 
                 override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
-                    System.out.println("################ onChildChanged ######################")
                     val user = snapshot.getValue(User::class.java)
                     searchUserData.value = user!!
                     searchUserEmail = searchUserData.value!!.email
-                    System.out.println(searchUserData.value)
                 }
 
                 override fun onChildRemoved(snapshot: DataSnapshot) {
-                    System.out.println(searchUserEmail)
                     usersRef.orderByChild("email").equalTo(searchUserEmail).addListenerForSingleValueEvent(object : ValueEventListener{
                         override fun onDataChange(snapshot: DataSnapshot) {
                             for (snapshot2 in snapshot.children) {
@@ -143,8 +134,6 @@ class SnsViewModel(email:String):ViewModel() {
             val addFollowerKey = searchUserData.value!!.follower!!.indexOf("")
             val addFollowingKey = myData.value!!.following!!.indexOf("")
 
-            System.out.println(searchUserData.value!!.follower!!)
-            System.out.println(myData.value!!.following!!)
             if(addFollowerKey >= 0){
                 usersRef.child(searchUserKey).child("follower").child((addFollowerKey).toString()).setValue(userKey)
             }

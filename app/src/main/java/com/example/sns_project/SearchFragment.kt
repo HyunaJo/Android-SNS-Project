@@ -64,8 +64,6 @@ class SearchFragment: Fragment(R.layout.searchfragment_layout){
         arrayAdapter = SearchListAdapter()
         listView.adapter = arrayAdapter
         listView.setOnItemClickListener{ parent, view, position, id ->
-            System.out.println("position ==> $position")
-            System.out.println("id ==> $id")
             val name = displayUsers.get(position)
             viewModel.getSearchUserInfo(name)
             val navAction = SearchFragmentDirections.actionSearchFragmentToUserFeedFragment(name)

@@ -42,7 +42,6 @@ class FollowingListFragment(userKey:String): Fragment(R.layout.followinglistfrag
         viewModel = snsActivity.viewModel
         listView = binding.followingListView
 
-        System.out.println("============${userKey}============")
         val userRef = database.getReference("users")
         userRef.child(userKey).child("following").addValueEventListener(object : ValueEventListener {
             override fun onCancelled(error: DatabaseError) {
@@ -54,7 +53,6 @@ class FollowingListFragment(userKey:String): Fragment(R.layout.followinglistfrag
                     if(!following.equals(""))
                         followings.add(following!!)
                 }
-                System.out.println(followings)
                 arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,followings)
                 listView.adapter = arrayAdapter
             }

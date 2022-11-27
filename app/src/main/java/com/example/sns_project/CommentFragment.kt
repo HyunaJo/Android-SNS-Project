@@ -11,7 +11,9 @@ import com.example.sns_project.databinding.CommentfragmentLayoutBinding
 import com.google.firebase.database.ChildEventListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -138,8 +140,23 @@ class CommentFragment : Fragment(R.layout.commentfragment_layout){
             val postWriter = view!!.findViewById<TextView>(R.id.postWriter)
             val commentTextView = view.findViewById<TextView>(R.id.comment)
 
-            postWriter.text = listViewItem["user"]
-            commentTextView.text = listViewItem["content"]
+            postWriter.text = ""
+
+            viewModel.usersRef.orderByKey().equalTo(listViewItem["user"]!!).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    for(nickname in snapshot.children){
+                        System.out.println(nickname.child("nickname").value)
+                        postWriter.text = nickname.child("nickname").value.toString()
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    TODO("Not yet implemented")
+                }
+
+            })
+
+                commentTextView.text = listViewItem["content"]
 
             return view
         }

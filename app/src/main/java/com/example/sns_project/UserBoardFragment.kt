@@ -51,7 +51,6 @@ class UserBoardFragment : Fragment(R.layout.myboardfragment_layout) {
         myBoardList = viewModel.searchUserData.value!!.boardList!!
         val size = myBoardList.size
         val selectedBoardName = myBoardList.get(size-(boardIdx+1)) //선택된 게시물 식별자
-        println("게시 식별자: " + selectedBoardName)
 
         val commentButton = binding.commentButton
 
@@ -76,8 +75,6 @@ class UserBoardFragment : Fragment(R.layout.myboardfragment_layout) {
 
                 //좋아요 버튼 클릭
                 binding.likeButton.setOnClickListener() {
-                    System.out.println("좋아요 버튼 클릭! ")
-
                     var boardRef = database.getReference("board")
                     if(flag.equals("true")) { //좋아요 취소
                         boardRef.child(selectedBoardName).child("likes").child(userEmail).setValue("false")
@@ -107,14 +104,12 @@ class UserBoardFragment : Fragment(R.layout.myboardfragment_layout) {
             ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                 if(snapshot.getValue()?.equals("true") == true) count+=1
-                println(count)
                 binding.likeCountText.text = "좋아요 " + count.toString() + "개"
             }
 
             override fun onChildChanged(snapshot: DataSnapshot, previousChildName: String?) {
                 if(snapshot.getValue()?.equals("true") == true) count+=1
                 else if(snapshot.getValue()?.equals("false") == true) count-=1;
-                println(count)
                 binding.likeCountText.text = "좋아요 " + count.toString() + "개"
             }
 

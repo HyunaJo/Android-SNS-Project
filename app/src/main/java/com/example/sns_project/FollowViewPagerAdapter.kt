@@ -13,8 +13,6 @@ class FollowViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
     }
 
     override fun createFragment(position: Int): Fragment {
-        System.out.println(position)
-        System.out.println("create Fragment")
         return when(position){
             0 -> FollowerListFragment(userKey)
             else -> FollowingListFragment(userKey)

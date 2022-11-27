@@ -56,7 +56,6 @@ class CreateUserActivity : AppCompatActivity() {
                 for (userSnapShot in snapshot.children) {
                     val user = userSnapShot.getValue(User::class.java)
                     userList.add(user!!)
-                    System.out.println(user)
                 }
             }
         })
@@ -146,7 +145,6 @@ class CreateUserActivity : AppCompatActivity() {
     private fun checkIsDuplicatedEmail(newEmail:String):Boolean{
         var isDuplicated = false
         for(user in userList){
-            System.out.println("existEmail = ${user.email} / newEmail = ${newEmail}")
             if(user.email.equals(newEmail)){
                 isDuplicated = true
             }
@@ -157,7 +155,6 @@ class CreateUserActivity : AppCompatActivity() {
     private fun checkIsDuplicatedNickname(newNickname:String):Boolean{
         var isDuplicated = false
         for(user in userList){
-            System.out.println("existNickname = ${user.nickname} / newNickname = ${newNickname}")
             if(user.nickname.equals(newNickname)){
                 isDuplicated = true
             }
