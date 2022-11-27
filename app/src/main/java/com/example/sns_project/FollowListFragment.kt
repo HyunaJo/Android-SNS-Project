@@ -29,6 +29,7 @@ class FollowListFragment:Fragment(R.layout.followlistfragment_layout) {
         val viewPager = snsActivity.findViewById<ViewPager2>(R.id.viewpager)
 
         val adapter = FollowViewPagerAdapter(snsActivity.supportFragmentManager,lifecycle)
+        adapter.userKey = arg.userKey
         viewPager.adapter = adapter
 
         TabLayoutMediator(tablayout, viewPager){tab, position->
@@ -39,7 +40,7 @@ class FollowListFragment:Fragment(R.layout.followlistfragment_layout) {
         }.attach()
 
         snsActivity.findViewById<TextView>(R.id.toolbarTextView).text=""
-        var tabIdx = arg.tabIdx
+        val tabIdx = arg.tabIdx
         viewPager.post{ viewPager.setCurrentItem(tabIdx,false) }
 
 //        binding.tabLayout.getTabAt(tabIdx)!!.select()

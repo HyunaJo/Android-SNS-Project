@@ -71,6 +71,9 @@
             android:name="tabIdx"
             app:argType="integer"
             android:defaultValue="0" />
+        <argument
+            android:name="userKey"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/boardFragment"

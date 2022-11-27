@@ -72,6 +72,30 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
             binding.followerNumberText.text = viewModel.searchUserData.value!!.follower!!.filterNot{ it == "" }.size.toString() // 팔로워 수
         })
 
+        binding.followerNumberText.setOnClickListener {       //팔로워 팔로잉 activity
+            val tabIdx = 0
+            val navAction = UserFeedFragmentDirections.actionUserFeedFragmentToFollowListFragment(viewModel.searchUserKey, tabIdx)
+            findNavController().navigate(navAction)
+        }
+
+        binding.FollowerTextView.setOnClickListener {       //팔로워 팔로잉 activity
+            val tabIdx = 0
+            val navAction = UserFeedFragmentDirections.actionUserFeedFragmentToFollowListFragment(viewModel.searchUserKey,tabIdx)
+            findNavController().navigate(navAction)
+        }
+
+        //Intent로 following을 눌렀다는 표시를 FollowListActivity에서 알도록 Intent에 값을 실어서 보내야 할거 같으!
+        binding.followingNumberText.setOnClickListener {      //팔로워 팔로잉 activity
+            val tabIdx = 1
+            val navAction = UserFeedFragmentDirections.actionUserFeedFragmentToFollowListFragment(viewModel.searchUserKey,tabIdx)
+            findNavController().navigate(navAction)
+        }
+        binding.FollowingTextView.setOnClickListener {      //팔로워 팔로잉 activity
+            val tabIdx = 1
+            val navAction = UserFeedFragmentDirections.actionUserFeedFragmentToFollowListFragment(viewModel.searchUserKey,tabIdx)
+            findNavController().navigate(navAction)
+        }
+
         viewModel.isFollowingUser.observe(viewLifecycleOwner, Observer {
             if(viewModel.isFollowingUser.value == true){
                 binding.followButton.setBackgroundResource(R.drawable.btn_clicked)

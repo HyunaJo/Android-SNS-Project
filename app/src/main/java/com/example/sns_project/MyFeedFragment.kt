@@ -58,25 +58,25 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
 
         binding.followerNumberText.setOnClickListener {       //팔로워 팔로잉 activity
             val tabIdx = 0
-            val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
+            val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(viewModel.userKey,tabIdx)
             findNavController().navigate(navAction)
         }
 
         binding.FollowerTextView.setOnClickListener {       //팔로워 팔로잉 activity
             val tabIdx = 0
-            val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
+            val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(viewModel.userKey,tabIdx)
             findNavController().navigate(navAction)
         }
 
         //Intent로 following을 눌렀다는 표시를 FollowListActivity에서 알도록 Intent에 값을 실어서 보내야 할거 같으!
         binding.followingNumberText.setOnClickListener {      //팔로워 팔로잉 activity
             val tabIdx = 1
-            val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
+            val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(viewModel.userKey,tabIdx)
             findNavController().navigate(navAction)
         }
         binding.FollowingTextView.setOnClickListener {      //팔로워 팔로잉 activity
             val tabIdx = 1
-            val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(tabIdx)
+            val navAction = MyFeedFragmentDirections.actionMyFeedFragmentToFollowListFragment(viewModel.userKey,tabIdx)
             findNavController().navigate(navAction)
         }
 

@@ -6,6 +6,8 @@ import androidx.lifecycle.Lifecycle
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
 class FollowViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :FragmentStateAdapter(fragmentManager, lifecycle){
+    var userKey = ""
+
     override fun getItemCount(): Int {
         return 2
     }
@@ -14,8 +16,8 @@ class FollowViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
         System.out.println(position)
         System.out.println("create Fragment")
         return when(position){
-            0 -> FollowerListFragment()
-            else -> FollowingListFragment()
+            0 -> FollowerListFragment(userKey)
+            else -> FollowingListFragment(userKey)
         }
     }
 }
