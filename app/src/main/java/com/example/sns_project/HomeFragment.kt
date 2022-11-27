@@ -71,15 +71,10 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
 
         viewModel.myData.observe(viewLifecycleOwner, Observer {
             val followings = viewModel.myData.value!!.following!!.filterNot { it == "" } as ArrayList<String>// 게시물 나타낼 유저 이름들
-//            followings.add(viewModel.userKey) // 내 게시물도 나타내야함
-//            if()
             listviewAdapter = HomeListViewAdapter(followings)
             listView = binding.homeListView
             listView.adapter = listviewAdapter
             listviewAdapter.notifyDataSetChanged()
-            System.out.println("====================followings===================")
-//            System.out.println(listviewAdapter.followings)
-//            setFollowButton()
         })
     }
 
@@ -91,18 +86,14 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
 
 
         init{
-//            followings = viewModel.myData.value!!.following!!
             this.followings = followings
-            if(!followings.contains(viewModel.userKey))
-                followings.add(viewModel.userKey)
             boardRef.addChildEventListener(object :
                 ChildEventListener {
                 override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
                     val board = snapshot.getValue(Board::class.java)
                     board!!.boardKey = snapshot.key.toString()
-//                    viewModel.boardData.add(board)
 
-                    if(followings.contains(board.writer)){
+                    if(followings.contains(board.writer) || board.writer.equals(viewModel.userKey)){
                         listViewItemList.add(board)
                     }
                     listViewItemList.sortWith(Comparator { o1, o2 -> o2.time.compareTo(o1.time) })
@@ -111,8 +102,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
                         System.out.println(i)
                         System.out.println(i.time)
                     }
-
-                    System.out.println("boardData 총 개수 =======> ${viewModel.boardData.size}개")
                     notifyDataSetChanged()
                 }
 
@@ -129,7 +118,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
                     listViewItemList.sortWith { o1, o2 -> o2.time.compareTo(o1.time) }
 
                     viewModel.boardData = listViewItemList
-                    System.out.println("boardData 총 개수 =======> ${viewModel.boardData.size}개")
                     notifyDataSetChanged()
                 }
 
@@ -195,7 +183,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
             postID.text = nickname
             postID2.text = nickname
             postContent.text = listViewItem.post
-//            likeCount.text = "좋아요 "+listViewItem.likes!!.size.toString()+"개"
             Glide.with(context).load(listViewItem.imageUrl).into(postImgView)
 
             commentButton.setOnClickListener {
@@ -226,14 +213,12 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
 
                         if(flag.equals("true")) { //좋아요 취소
                             boardRef.child(boardKey).child("likes").child(userEmail).setValue("false")
-//                            binding.likeCountText.text = "좋아요 " + (--count).toString() + "개"
                             board.likes?.set(userEmail,"false")
                             flag = "false"
                             likeButton.setImageResource(R.drawable.ic_unlike)
                         }
                         else { //좋아요 하기
                             boardRef.child(boardKey).child("likes").child(userEmail).setValue("true")
-//                            binding.likeCountText.text = "좋아요 " + (++count).toString() + "개"
                             board.likes?.set(userEmail,"true")
                             flag = "true"
                             likeButton.setImageResource(R.drawable.ic_like)
@@ -241,8 +226,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
                     }
                 }
             })
-
-
 
             boardRef.child(boardKey).child("likes").addChildEventListener(object :
                 ChildEventListener {
@@ -273,10 +256,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
             })
 
             return view
-        }
-
-        fun changeFollowing(followings:ArrayList<String>){
-            this.followings = followings
         }
     }
 }

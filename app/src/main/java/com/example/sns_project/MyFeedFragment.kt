@@ -125,8 +125,6 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
                     }
                     viewModel.myBoardData = myBoardList
                     notifyDataSetChanged()
-
-                    System.out.println(imageList)
                 }
             })
         }
@@ -140,7 +138,6 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
             val width = resources.displayMetrics.widthPixels / 3
             holder.profileImage.layoutParams = LinearLayoutCompat.LayoutParams(width, width)
             Glide.with(holder.itemView.context).load(imageList[position]).into(holder.profileImage)
-//            System.out.println(imageList.size)
         }
 
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
