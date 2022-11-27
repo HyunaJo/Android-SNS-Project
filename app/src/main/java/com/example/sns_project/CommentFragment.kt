@@ -145,7 +145,6 @@ class CommentFragment : Fragment(R.layout.commentfragment_layout){
             viewModel.usersRef.orderByKey().equalTo(listViewItem["user"]!!).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for(nickname in snapshot.children){
-                        System.out.println(nickname.child("nickname").value)
                         postWriter.text = nickname.child("nickname").value.toString()
                     }
                 }

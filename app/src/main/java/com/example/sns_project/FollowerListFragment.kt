@@ -49,9 +49,19 @@ class FollowerListFragment(userKey:String):Fragment(R.layout.followerlistfragmen
             override fun onDataChange(snapshot: DataSnapshot) {
                 followers.clear()
                 for (userSnapShot in snapshot.children) {
-                    val following = userSnapShot.getValue(String::class.java)
-                    if(!following.equals(""))
-                        followers.add(following!!)
+                    val follower = userSnapShot.getValue(String::class.java)
+                    if(!follower.equals("")){
+                        userRef.child(follower!!).child("nickname").addListenerForSingleValueEvent(object:ValueEventListener{
+                            override fun onDataChange(snapshot2: DataSnapshot) {
+                                followers.add(snapshot2.value as String)
+                                arrayAdapter.notifyDataSetChanged()
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                                TODO("Not yet implemented")
+                            }
+                        })
+
+                    }
                 }
                 arrayAdapter = ArrayAdapter(snsActivity,android.R.layout.simple_list_item_1,followers)
                 listView.adapter = arrayAdapter

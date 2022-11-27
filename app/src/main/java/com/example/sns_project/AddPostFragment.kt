@@ -87,7 +87,6 @@ class AddPostFragment: Fragment(R.layout.add_post){
                 return@setOnClickListener
             }
 
-            System.out.println("아오!!!!!!! " + count)
             val EmailID = userEmail.split("@")
             //user의 boardList 속성에 board 식별자 추가
             var usersRef = database.getReference("users")
@@ -142,7 +141,7 @@ class AddPostFragment: Fragment(R.layout.add_post){
             }
 
         }.addOnFailureListener {
-            println(it)
+//            println(it)
         }
     }
 }
