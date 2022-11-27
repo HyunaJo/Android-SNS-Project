@@ -66,6 +66,7 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
 
         viewModel.searchUserData.observe(viewLifecycleOwner, Observer {
             binding.usernameText.text = selectedName // 사용자 닉네임
+            userEmail = viewModel.searchUserData.value!!.email!!.split("@")[0] //해당 피드의 사용자 이메일 앞자리
             binding.postNumberText.text = viewModel.searchUserData.value!!.boardList!!.filterNot{ it == "" }.size.toString()
             binding.followingNumberText.text = viewModel.searchUserData.value!!.following!!.filterNot{ it == "" }.size.toString() // 팔로잉 수
             binding.followerNumberText.text = viewModel.searchUserData.value!!.follower!!.filterNot{ it == "" }.size.toString() // 팔로워 수
@@ -86,8 +87,7 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
 
         viewModel.getSearchUserInfo(selectedName)
 
-        //해당 피드의 사용자 email 앞자리
-        userEmail = viewModel.searchUserData.value!!.email!!.split("@")[0]
+        
 
         binding.followButton.setOnClickListener {
             if(viewModel.myData.value!!.following!!.contains(viewModel.searchUserKey)) {// 팔로우하고 있는 사용자인 경우
@@ -107,6 +107,7 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
         val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
         var boardList : ArrayList<Board> = ArrayList<Board>()
         var imageList: ArrayList<String> = arrayListOf<String>()
+        var userBoardList : ArrayList<Board> = ArrayList()
         init {
             // 친구 사진의 url만 찾아서 imageList에 저장
             val myRef = database.getReference("board")
@@ -116,7 +117,8 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (userSnapShot in snapshot.children) {
                         val board = userSnapShot.getValue(Board::class.java)
-                        boardList.add(board!!)
+                        board!!.boardKey = board.boardId+"_"+board.writer
+                        boardList.add(board)
                     }
 
                     //날짜순 정렬
@@ -126,6 +128,7 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
                     for(i in boardList) {
                         if(i.writer.equals(userEmail)) {
                             imageList.add(i.imageUrl)
+                            userBoardList.add(i)
                         }
                     }
                     notifyDataSetChanged()
@@ -143,7 +146,6 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
             val width = resources.displayMetrics.widthPixels / 3
             holder.profileImage.layoutParams = LinearLayoutCompat.LayoutParams(width, width)
             Glide.with(holder.itemView.context).load(imageList[position]).into(holder.profileImage)
-            System.out.println(imageList.size)
         }
 
         inner class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -151,7 +153,7 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
             init{
                 profileImage.setOnClickListener{
                     System.out.println("===============click image===================")
-                    System.out.println(boardList[adapterPosition].post)
+                    System.out.println(userBoardList[adapterPosition].post)
                     System.out.println(adapterPosition)
                     System.out.println("==================================")
                     val navAction = UserFeedFragmentDirections.actionUserFeedFragmentToUserBoardFragment3(selectedName, adapterPosition)
