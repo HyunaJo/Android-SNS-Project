@@ -1,14 +1,11 @@
 package com.example.sns_project
 
-import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodManager
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.TextView
 import androidx.appcompat.widget.SearchView
@@ -16,7 +13,6 @@ import androidx.appcompat.widget.SearchView.SearchAutoComplete
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.sns_project.databinding.SearchfragmentLayoutBinding
 import com.google.firebase.database.DataSnapshot

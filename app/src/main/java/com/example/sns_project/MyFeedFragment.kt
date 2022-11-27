@@ -1,7 +1,6 @@
 package com.example.sns_project
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -96,7 +95,6 @@ class MyFeedFragment : Fragment(R.layout.myfeedfragment_layout) {
         val database = Firebase.database("https://sns-project-dc395-default-rtdb.asia-southeast1.firebasedatabase.app/")
         var boardList : ArrayList<Board> = ArrayList<Board>()
         var imageList: ArrayList<String> = arrayListOf<String>()
-        var imageUrl: String = ""
         var myBoardList : ArrayList<Board> = ArrayList()
 
         init {

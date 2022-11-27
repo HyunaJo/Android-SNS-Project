@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.example.sns_project.databinding.FollowerlistfragmentLayoutBinding
 import com.example.sns_project.databinding.FollowinglistfragmentLayoutBinding
 
 class FollowingListFragment: Fragment(R.layout.followinglistfragment_layout) {

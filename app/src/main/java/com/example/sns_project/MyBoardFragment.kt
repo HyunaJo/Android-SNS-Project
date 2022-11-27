@@ -2,13 +2,11 @@ package com.example.sns_project
 
 import android.os.Bundle
 import android.view.*
-import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.sns_project.databinding.BoardItemBinding
 import com.example.sns_project.databinding.MyboardfragmentLayoutBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ChildEventListener
@@ -16,7 +14,6 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import java.util.*
 import kotlin.collections.ArrayList
 
 class MyBoardFragment : Fragment(R.layout.myboardfragment_layout) {

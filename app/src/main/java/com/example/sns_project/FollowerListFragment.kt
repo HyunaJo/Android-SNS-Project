@@ -9,7 +9,6 @@ import android.widget.ListView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.sns_project.databinding.FollowerlistfragmentLayoutBinding
-import com.example.sns_project.databinding.UserfeedfragmentLayoutBinding
 
 class FollowerListFragment:Fragment(R.layout.followerlistfragment_layout) {
     lateinit var binding: FollowerlistfragmentLayoutBinding

@@ -195,7 +195,6 @@ class HomeFragment:Fragment(R.layout.homefragment_layout) {
             var boardKey = listViewItem.boardKey
             var count = 0
             val boardRef = database.getReference("board")
-//        var board:Board?
             boardRef.child(boardKey!!).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                 }
