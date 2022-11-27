@@ -82,6 +82,9 @@
         <argument
             android:name="nickname"
             app:argType="string" />
+        <action
+            android:id="@+id/action_boardFragment_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
     <fragment
         android:id="@+id/commentFragment"
@@ -107,6 +110,9 @@
         <argument
             android:name="boardIdx"
             app:argType="integer" />
+        <action
+            android:id="@+id/action_userBoardFragment3_to_commentFragment"
+            app:destination="@id/commentFragment" />
     </fragment>
 
 </navigation>

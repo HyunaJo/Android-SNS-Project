@@ -7,6 +7,7 @@ import android.widget.ListView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.sns_project.databinding.ActivityLoginBinding.inflate
@@ -56,9 +57,12 @@ class UserBoardFragment : Fragment(R.layout.myboardfragment_layout) {
 
         viewModel.getSearchUserInfo(selectedName)
         myBoardList = viewModel.searchUserData.value!!.boardList!!
-        var size = myBoardList.size
-        var selectedBoardName = myBoardList?.get(size-(boardIdx+1)) //선택된 게시물 식별자
+        val size = myBoardList.size
+        val selectedBoardName = myBoardList.get(size-(boardIdx+1)) //선택된 게시물 식별자
         println("게시 식별자: " + selectedBoardName)
+
+        val commentButton = binding.commentButton
+
 
         //게시물 식별자에 해당하는 게시물 가져오기
         var count = 0
@@ -70,8 +74,8 @@ class UserBoardFragment : Fragment(R.layout.myboardfragment_layout) {
             override fun onDataChange(snapshot: DataSnapshot) {
                 board = snapshot.getValue(Board::class.java)!!
                 if (board != null) {
-                    binding.postContent.text = board!!.post
-                    Glide.with(snsActivity.baseContext).load(board!!.imageUrl).into(binding.postImageView)
+                    binding.postContent.text = board.post
+                    Glide.with(snsActivity.baseContext).load(board.imageUrl).into(binding.postImageView)
                 }
 
                 //내가 좋아요 했었는지, 안 했었는지 판단
@@ -98,6 +102,12 @@ class UserBoardFragment : Fragment(R.layout.myboardfragment_layout) {
                         flag = "true"
                         binding.likeButton.setImageResource(R.drawable.ic_like)
                     }
+                }
+
+                commentButton.setOnClickListener {
+                    val navAction = UserBoardFragmentDirections.actionUserBoardFragment3ToCommentFragment(
+                        selectedBoardName, selectedName, board.post!!)
+                    findNavController().navigate(navAction)
                 }
             }
         })

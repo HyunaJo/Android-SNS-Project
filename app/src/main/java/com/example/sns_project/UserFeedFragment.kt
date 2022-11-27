@@ -87,8 +87,6 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
 
         viewModel.getSearchUserInfo(selectedName)
 
-        
-
         binding.followButton.setOnClickListener {
             if(viewModel.myData.value!!.following!!.contains(viewModel.searchUserKey)) {// 팔로우하고 있는 사용자인 경우
                 System.out.println("팔로우 취소 클릭")
@@ -132,7 +130,6 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
                         }
                     }
                     notifyDataSetChanged()
-                    System.out.println(imageList)
                 }
             })
         }
@@ -152,10 +149,6 @@ class UserFeedFragment: Fragment(R.layout.userfeedfragment_layout) {
             val profileImage = itemView.findViewById<ImageView>(R.id.MyFeedGridImage)
             init{
                 profileImage.setOnClickListener{
-                    System.out.println("===============click image===================")
-                    System.out.println(userBoardList[adapterPosition].post)
-                    System.out.println(adapterPosition)
-                    System.out.println("==================================")
                     val navAction = UserFeedFragmentDirections.actionUserFeedFragmentToUserBoardFragment3(selectedName, adapterPosition)
                     findNavController().navigate(navAction)
                 }

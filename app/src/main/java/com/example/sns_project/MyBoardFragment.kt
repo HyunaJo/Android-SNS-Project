@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.ListView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.example.sns_project.databinding.BoardItemBinding
@@ -52,18 +53,21 @@ class MyBoardFragment : Fragment(R.layout.myboardfragment_layout) {
         binding.postContent.text = selectedBoard.post
 
         var count = 0 //좋아요 개수
-        var boardId = selectedBoard.boardId
-        var writer = selectedBoard.writer
-        var boardIdentifier = writer + "_" + boardId //fkgnssla_0
+        val boardId = selectedBoard.boardId
+        val writer = selectedBoard.writer
+        val boardIdentifier = writer + "_" + boardId //fkgnssla_0
 
-        println("" + boardIdx + " " + boardId + " " + boardIdentifier)
+        binding.commentButton.setOnClickListener {
+            val navAction = MyBoardFragmentDirections.actionBoardFragmentToCommentFragment(boardIdentifier, writer, selectedBoard.post!!)
+            findNavController().navigate(navAction)
+        }
+
         //내가 좋아요 했었는지, 안 했었는지 판단
         var flag = selectedBoard.likes!!.get(userEmail)
         if(flag.equals("true")) binding.likeButton.setImageResource(R.drawable.ic_like)
         else binding.likeButton.setImageResource(R.drawable.ic_unlike)
 
-
-        var boardRef = database.getReference("board")
+        val boardRef = database.getReference("board")
        //좋아요 버튼 클릭
         binding.likeButton.setOnClickListener() {
             System.out.println("좋아요 버튼 클릭! " + boardIdentifier)
