@@ -69,17 +69,22 @@ class CommentFragment : Fragment(R.layout.commentfragment_layout){
         arrayAdapter.notifyDataSetChanged()
 
         addCommentButton.setOnClickListener{
-            val data = hashMapOf(
-                "user" to viewModel.userKey,
-                "content" to commentEditText.text.toString()
-            )
+            if(!commentEditText.text.toString().equals("")){
+                val data = hashMapOf(
+                    "user" to viewModel.userKey,
+                    "content" to commentEditText.text.toString()
+                )
 
-            boardRef.child(boardKey).child("comments").child(listViewItemList.size.toString()).setValue(data)
+                boardRef.child(boardKey).child("comments").child(listViewItemList.size.toString()).setValue(data)
 
-            commentEditText.text!!.clear()
-            commentEditText.clearFocus()
-            val inputMethodManager = snsActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+                commentEditText.text!!.clear()
+                commentEditText.clearFocus()
+                val inputMethodManager = snsActivity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
+            }
+            else{
+                Toast.makeText(snsActivity.applicationContext, "댓글 내용을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
