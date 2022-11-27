@@ -24,7 +24,6 @@ class CommentFragment : Fragment(R.layout.commentfragment_layout){
     lateinit var listView: ListView
     lateinit var viewModel:SnsViewModel
     lateinit var binding:CommentfragmentLayoutBinding
-    lateinit var comments: ArrayList<HashMap<String,String>>
 
     var listViewItemList = ArrayList<HashMap<String,String>>()
 

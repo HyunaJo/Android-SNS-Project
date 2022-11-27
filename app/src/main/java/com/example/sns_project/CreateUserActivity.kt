@@ -1,10 +1,8 @@
 package com.example.sns_project
 
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
@@ -16,9 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.*
 import java.util.*
 import java.util.regex.Pattern
 
@@ -58,12 +54,9 @@ class CreateUserActivity : AppCompatActivity() {
 
             override fun onDataChange(snapshot: DataSnapshot) {
                 for (userSnapShot in snapshot.children) {
-//                    System.out.println(userSnapShot)
                     val user = userSnapShot.getValue(User::class.java)
                     userList.add(user!!)
                     System.out.println(user)
-//                    userEmailList.add(userSnapShot!!.child("email").getValue(String::class.java)!!)
-//                    userNicknameList.add(userSnapShot!!.child("nickname").getValue(String::class.java)!!)
                 }
             }
         })
@@ -141,7 +134,6 @@ class CreateUserActivity : AppCompatActivity() {
                 userNode.setValue(user)
 
                 // Authentication 회원가입(인증에 대한 코드)
-                // Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
                 Firebase.auth.createUserWithEmailAndPassword(userEmail, password)
 
                 val intent = Intent(this, LoginActivity::class.java)
